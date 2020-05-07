@@ -1,8 +1,9 @@
-name: datestripreportpackage
-description: A new Flutter package.
-version: 0.0.1
-author:
-homepage:
+name: date_strip_report
+description: A Flutter package able show DateTime Report Control,
+   Date range can also be set between 2 date to disable selection of irrevelant dates.
+version: 1.0.0
+author: NguyenGiap<nguyengiap1467@gmail.com>
+homepage: https://github.com/nguyengiap1467/DateStripReport
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

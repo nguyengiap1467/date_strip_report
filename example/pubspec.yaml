@@ -24,7 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   jiffy: ^3.0.1
-  datestripreportpackage:
+  date_strip_report:
     path: ../
 
 dev_dependencies:

@@ -1,9 +1,7 @@
-library datestripreportpackage;
+library date_strip_report;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
-
-import 'date-utils.dart';
 import 'i18n_calendar_strip.dart';
 
 

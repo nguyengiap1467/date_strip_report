@@ -1,5 +1,5 @@
-import 'package:datestripreportpackage/datestripreportpackage.dart';
-import 'package:datestripreportpackage/i18n_calendar_strip.dart';
+import 'package:date_strip_report/date_strip_report.dart';
+import 'package:date_strip_report/i18n_calendar_strip.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -83,16 +83,19 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: DateStripReport(
-          onDateSelected: onSelect,
+          startDate: new DateTime(2020,1,1),
+          endDate: new DateTime(2021,1,1),
           isShowMonth: true,
           isShowHalfYear: true,
           isShowQuarter: true,
           isShowYear: true,
-          startDate: new DateTime(2020,1,1),
-          endDate: new DateTime(2021,1,1),
+          textColor: Colors.green,
+          leftIcon: Icon(Icons.arrow_back_ios),
+          rightIcon: Icon(Icons.arrow_forward_ios),
           selectedColor: Colors.green,
           unSelectedColor: Colors.white,
           locale: LocaleType.en,
+          onDateSelected: onSelect,
         )
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
