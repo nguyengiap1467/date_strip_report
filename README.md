@@ -143,3 +143,11 @@ class _MyHomePageState extends State<MyHomePage> {
 | **`navigationDisableColor`**     | Color of navigation icon is disable                    | `Color`       | `Colors.black12`                    |
 | **`locale`**     | localization of language             | `LocaleType`       | `LocaleType.en`                    |
 | **`onDateSelected`**      | Function that is called on selection of a date. (Required)                                           | `Function`       | **`Required`**       |
+
+
+
+
+## Donation
+If this project help you reduce time to develop, you can give me a cup of coffee :) 
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/nguyengiap/5)
