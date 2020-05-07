@@ -1,0 +1,4 @@
+#Thu May 07 14:44:55 ICT 2020
+base.0=/Users/nguyengiap/iprojects/date_strip_report/date_strip_report/example/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
