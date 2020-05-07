@@ -3,7 +3,7 @@ description: A Flutter package able show DateTime Report Control,
    Date range can also be set between 2 date to disable selection of irrevelant dates.
 version: 1.0.0
 author: NguyenGiap<nguyengiap1467@gmail.com>
-homepage: https://github.com/nguyengiap1467/DateStripReport
+homepage: https://github.com/nguyengiap1467/date_strip_report
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
