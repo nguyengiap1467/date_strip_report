@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key,required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         child: DateStripReport(
           startDate: new DateTime(2020,1,1),
-          endDate: new DateTime(2021,1,1),
+          endDate: new DateTime(2024,1,1),
           isShowMonth: true,
           isShowHalfYear: true,
           isShowQuarter: true,

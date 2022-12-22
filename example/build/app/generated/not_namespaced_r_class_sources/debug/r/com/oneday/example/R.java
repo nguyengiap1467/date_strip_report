@@ -10,17 +10,52 @@ package com.oneday.example;
 public final class R {
   public static final class attr {
     /**
+     * Action used for activity launch. May be empty. Must not contain wildcards.
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     */
+    public static final int activityAction=0x7f010000;
+    /**
+     * Component name of the primary activity in the split. Must be non-empty. Can contain a
+     * single wildcard at the end.
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     */
+    public static final int activityName=0x7f010001;
+    /**
      * Alpha multiplier applied to the base color.
      * <p>May be a floating point value, such as "<code>1.2</code>".
      */
-    public static final int alpha=0x7f010000;
+    public static final int alpha=0x7f010002;
     /**
-     * <p>May be a reference to another resource, in the form
-     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
-     * attribute in the form
-     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
+     * Whether the activity should always be expanded on launch.
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
      */
-    public static final int coordinatorLayoutStyle=0x7f010001;
+    public static final int alwaysExpand=0x7f010003;
+    /**
+     * If there is an existing split with the same primary container, indicates whether the
+     * existing secondary container on top and all activities in it should be destroyed when a new
+     * split is created using this rule. Otherwise the new secondary will appear on top. Defaults
+     * to "false".
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     */
+    public static final int clearTop=0x7f010004;
+    /**
+     * When all activities are finished in the secondary container, the activity in the
+     * primary container that created the split should also be finished. Defaults to "false".
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     */
+    public static final int finishPrimaryWithSecondary=0x7f010005;
+    /**
+     * When all activities are finished in the primary container, the activities in the
+     * secondary container in the split should also be finished. Defaults to "true".
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     */
+    public static final int finishSecondaryWithPrimary=0x7f010006;
     /**
      * The reference to the font file to be used. This should be a file in the res/font folder
      * and should therefore have an R reference value. E.g. @font/myfont
@@ -29,13 +64,13 @@ public final class R {
      * attribute in the form
      * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
      */
-    public static final int font=0x7f010002;
+    public static final int font=0x7f010007;
     /**
      * The authority of the Font Provider to be used for the request.
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      */
-    public static final int fontProviderAuthority=0x7f010003;
+    public static final int fontProviderAuthority=0x7f010008;
     /**
      * The sets of hashes for the certificates the provider should be signed with. This is
      * used to verify the identity of the provider, and is only required if the provider is not
@@ -47,7 +82,7 @@ public final class R {
      * attribute in the form
      * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
      */
-    public static final int fontProviderCerts=0x7f010004;
+    public static final int fontProviderCerts=0x7f010009;
     /**
      * The strategy to be used when fetching font data from a font provider in XML layouts.
      * This attribute is ignored when the resource is loaded from code, as it is equivalent to the
@@ -74,7 +109,7 @@ public final class R {
      * default typeface will be used instead.</td></tr>
      * </table>
      */
-    public static final int fontProviderFetchStrategy=0x7f010005;
+    public static final int fontProviderFetchStrategy=0x7f01000a;
     /**
      * The length of the timeout during fetching.
      * <p>May be an integer value, such as "<code>100</code>".
@@ -88,21 +123,30 @@ public final class R {
      * timeout and wait until a reply is received from the font provider.</td></tr>
      * </table>
      */
-    public static final int fontProviderFetchTimeout=0x7f010006;
+    public static final int fontProviderFetchTimeout=0x7f01000b;
     /**
      * The package for the Font Provider to be used for the request. This is used to verify
      * the identity of the provider.
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      */
-    public static final int fontProviderPackage=0x7f010007;
+    public static final int fontProviderPackage=0x7f01000c;
     /**
      * The query to be sent over to the provider. Refer to your font provider's documentation
      * on the format of this string.
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      */
-    public static final int fontProviderQuery=0x7f010008;
+    public static final int fontProviderQuery=0x7f01000d;
+    /**
+     * Provides the system font family name to check before downloading the font. For
+     * example if the fontProviderQuery asked for "Sans Serif", it is possible to define
+     * fontProviderSystemFontFamily as "sans-serif" to tell the system to use "sans-serif" font
+     * family if it exists on the system.
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     */
+    public static final int fontProviderSystemFontFamily=0x7f01000e;
     /**
      * The style of the given font file. This will be used when the font is being loaded into
      * the font stack and will override any style information in the font's header tables. If
@@ -117,7 +161,7 @@ public final class R {
      * <tr><td>normal</td><td>0</td><td></td></tr>
      * </table>
      */
-    public static final int fontStyle=0x7f010009;
+    public static final int fontStyle=0x7f01000f;
     /**
      * The variation settings to be applied to the font. The string should be in the following
      * format: "'tag1' value1, 'tag2' value2, ...". If the default variation settings should be
@@ -126,7 +170,7 @@ public final class R {
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      */
-    public static final int fontVariationSettings=0x7f01000a;
+    public static final int fontVariationSettings=0x7f010010;
     /**
      * The weight of the given font file. This will be used when the font is being loaded into
      * the font stack and will override any weight information in the font's header tables. Must
@@ -135,134 +179,100 @@ public final class R {
      * in the font's header tables will be used.
      * <p>May be an integer value, such as "<code>100</code>".
      */
-    public static final int fontWeight=0x7f01000b;
+    public static final int fontWeight=0x7f010011;
     /**
-     * A reference to an array of integers representing the
-     * locations of horizontal keylines in dp from the starting edge.
-     * Child views can refer to these keylines for alignment using
-     * layout_keyline="index" where index is a 0-based index into
-     * this array.
      * <p>May be a reference to another resource, in the form
      * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
      * attribute in the form
      * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
      */
-    public static final int keylines=0x7f01000c;
+    public static final int nestedScrollViewStyle=0x7f010012;
     /**
-     * The id of an anchor view that this view should position relative to.
-     * <p>May be a reference to another resource, in the form
-     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
-     * attribute in the form
-     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
-     */
-    public static final int layout_anchor=0x7f01000d;
-    /**
-     * Specifies how an object should position relative to an anchor, on both the X and Y axes,
-     * within its parent's bounds.
-     * <p>Must be one or more (separated by '|') of the following constant values.</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-     * <tr><td>bottom</td><td>50</td><td>Push object to the bottom of its container, not changing its size.</td></tr>
-     * <tr><td>center</td><td>11</td><td>Place the object in the center of its container in both the vertical and horizontal axis, not changing its size.</td></tr>
-     * <tr><td>center_horizontal</td><td>1</td><td>Place object in the horizontal center of its container, not changing its size.</td></tr>
-     * <tr><td>center_vertical</td><td>10</td><td>Place object in the vertical center of its container, not changing its size.</td></tr>
-     * <tr><td>clip_horizontal</td><td>8</td><td>Additional option that can be set to have the left and/or right edges of
-     * the child clipped to its container's bounds.
-     * The clip will be based on the horizontal gravity: a left gravity will clip the right
-     * edge, a right gravity will clip the left edge, and neither will clip both edges.</td></tr>
-     * <tr><td>clip_vertical</td><td>80</td><td>Additional option that can be set to have the top and/or bottom edges of
-     * the child clipped to its container's bounds.
-     * The clip will be based on the vertical gravity: a top gravity will clip the bottom
-     * edge, a bottom gravity will clip the top edge, and neither will clip both edges.</td></tr>
-     * <tr><td>end</td><td>800005</td><td>Push object to the end of its container, not changing its size.</td></tr>
-     * <tr><td>fill</td><td>77</td><td>Grow the horizontal and vertical size of the object if needed so it completely fills its container.</td></tr>
-     * <tr><td>fill_horizontal</td><td>7</td><td>Grow the horizontal size of the object if needed so it completely fills its container.</td></tr>
-     * <tr><td>fill_vertical</td><td>70</td><td>Grow the vertical size of the object if needed so it completely fills its container.</td></tr>
-     * <tr><td>left</td><td>3</td><td>Push object to the left of its container, not changing its size.</td></tr>
-     * <tr><td>right</td><td>5</td><td>Push object to the right of its container, not changing its size.</td></tr>
-     * <tr><td>start</td><td>800003</td><td>Push object to the beginning of its container, not changing its size.</td></tr>
-     * <tr><td>top</td><td>30</td><td>Push object to the top of its container, not changing its size.</td></tr>
-     * </table>
-     */
-    public static final int layout_anchorGravity=0x7f01000e;
-    /**
-     * The class name of a Behavior class defining special runtime behavior
-     * for this child view.
+     * Component name of the placeholder activity in the split. Must be non-empty.
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      */
-    public static final int layout_behavior=0x7f01000f;
+    public static final int placeholderActivityName=0x7f010013;
     /**
-     * Specifies how this view dodges the inset edges of the CoordinatorLayout.
-     * <p>Must be one or more (separated by '|') of the following constant values.</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-     * <tr><td>all</td><td>77</td><td>Dodge all the inset edges.</td></tr>
-     * <tr><td>bottom</td><td>50</td><td>Dodge the bottom inset edge.</td></tr>
-     * <tr><td>end</td><td>800005</td><td>Dodge the end inset edge.</td></tr>
-     * <tr><td>left</td><td>3</td><td>Dodge the left inset edge.</td></tr>
-     * <tr><td>none</td><td>0</td><td>Don't dodge any edges</td></tr>
-     * <tr><td>right</td><td>5</td><td>Dodge the right inset edge.</td></tr>
-     * <tr><td>start</td><td>800003</td><td>Dodge the start inset edge.</td></tr>
-     * <tr><td>top</td><td>30</td><td>Dodge the top inset edge.</td></tr>
-     * </table>
+     * Component name of the primary activity in the split. Must be non-empty. Can contain a
+     * wildcard at the end or instead of package name and/or class name.
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
      */
-    public static final int layout_dodgeInsetEdges=0x7f010010;
+    public static final int primaryActivityName=0x7f010014;
     /**
-     * Specifies how this view insets the CoordinatorLayout and make some other views
-     * dodge it.
+     * Resource reference to the string array of query patterns for a custom capability.
+     * <p>May be a reference to another resource, in the form
+     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
+     * attribute in the form
+     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
+     */
+    public static final int queryPatterns=0x7f010015;
+    /**
+     * Action used for secondary activity launch. May be empty. Must not contain wildcards.
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     */
+    public static final int secondaryActivityAction=0x7f010016;
+    /**
+     * Component name of the secondary activity in the split. Must be non-empty. Can contain a
+     * wildcard at the end or instead of package name and/or class name.
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     */
+    public static final int secondaryActivityName=0x7f010017;
+    /**
+     * Indicates whether a parameter in a capability template can only contain a matched
+     * shortcut id and not an arbitrary string.
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     */
+    public static final int shortcutMatchRequired=0x7f010018;
+    /**
      * <p>Must be one of the following constant values.</p>
      * <table>
      * <colgroup align="left" />
      * <colgroup align="left" />
      * <colgroup align="left" />
      * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-     * <tr><td>bottom</td><td>50</td><td>Inset the bottom edge.</td></tr>
-     * <tr><td>end</td><td>800005</td><td>Inset the end edge.</td></tr>
-     * <tr><td>left</td><td>3</td><td>Inset the left edge.</td></tr>
-     * <tr><td>none</td><td>0</td><td>Don't inset.</td></tr>
-     * <tr><td>right</td><td>5</td><td>Inset the right edge.</td></tr>
-     * <tr><td>start</td><td>800003</td><td>Inset the start edge.</td></tr>
-     * <tr><td>top</td><td>30</td><td>Inset the top edge.</td></tr>
+     * <tr><td>locale</td><td>0</td><td></td></tr>
+     * <tr><td>ltr</td><td>1</td><td></td></tr>
+     * <tr><td>rtl</td><td>2</td><td></td></tr>
      * </table>
      */
-    public static final int layout_insetEdge=0x7f010011;
+    public static final int splitLayoutDirection=0x7f010019;
     /**
-     * The index of a keyline this view should position relative to.
-     * android:layout_gravity will affect how the view aligns to the
-     * specified keyline.
-     * <p>May be an integer value, such as "<code>100</code>".
+     * <p>May be a dimension value, which is a floating point number appended with a
+     * unit such as "<code>14.5sp</code>".
+     * Available units are: px (pixels), dp (density-independent pixels),
+     * sp (scaled pixels based on preferred font size), in (inches), and
+     * mm (millimeters).
      */
-    public static final int layout_keyline=0x7f010012;
+    public static final int splitMinSmallestWidth=0x7f01001a;
     /**
-     * Drawable to display behind the status bar when the view is set to draw behind it.
-     * <p>May be a reference to another resource, in the form
-     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
-     * attribute in the form
-     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
-     * <p>May be a color value, in the form of "<code>#<i>rgb</i></code>",
-     * "<code>#<i>argb</i></code>", "<code>#<i>rrggbb</i></code>", or
-     * "<code>#<i>aarrggbb</i></code>".
+     * <p>May be a dimension value, which is a floating point number appended with a
+     * unit such as "<code>14.5sp</code>".
+     * Available units are: px (pixels), dp (density-independent pixels),
+     * sp (scaled pixels based on preferred font size), in (inches), and
+     * mm (millimeters).
      */
-    public static final int statusBarBackground=0x7f010013;
+    public static final int splitMinWidth=0x7f01001b;
+    /**
+     * <p>May be a floating point value, such as "<code>1.2</code>".
+     */
+    public static final int splitRatio=0x7f01001c;
     /**
      * The index of the font in the tcc font file. If the font file referenced is not in the
      * tcc format, this attribute needs not be specified.
      * <p>May be an integer value, such as "<code>100</code>".
      */
-    public static final int ttcIndex=0x7f010014;
+    public static final int ttcIndex=0x7f01001d;
   }
   public static final class color {
-    public static final int notification_action_color_filter=0x7f020000;
-    public static final int notification_icon_bg_color=0x7f020001;
-    public static final int ripple_material_light=0x7f020002;
-    public static final int secondary_text_default_material_light=0x7f020003;
+    public static final int androidx_core_ripple_material_light=0x7f020000;
+    public static final int androidx_core_secondary_text_default_material_light=0x7f020001;
+    public static final int notification_action_color_filter=0x7f020002;
+    public static final int notification_icon_bg_color=0x7f020003;
   }
   public static final class dimen {
     public static final int compat_button_inset_horizontal_material=0x7f030000;
@@ -304,61 +314,94 @@ public final class R {
     public static final int notify_panel_notification_icon_bg=0x7f04000c;
   }
   public static final class id {
-    public static final int action_container=0x7f050000;
-    public static final int action_divider=0x7f050001;
-    public static final int action_image=0x7f050002;
-    public static final int action_text=0x7f050003;
-    public static final int actions=0x7f050004;
-    public static final int all=0x7f050005;
-    public static final int async=0x7f050006;
-    public static final int blocking=0x7f050007;
-    public static final int bottom=0x7f050008;
-    public static final int center=0x7f050009;
-    public static final int center_horizontal=0x7f05000a;
-    public static final int center_vertical=0x7f05000b;
-    public static final int chronometer=0x7f05000c;
-    public static final int clip_horizontal=0x7f05000d;
-    public static final int clip_vertical=0x7f05000e;
-    public static final int end=0x7f05000f;
-    public static final int fill=0x7f050010;
-    public static final int fill_horizontal=0x7f050011;
-    public static final int fill_vertical=0x7f050012;
-    public static final int forever=0x7f050013;
-    public static final int icon=0x7f050014;
-    public static final int icon_group=0x7f050015;
-    public static final int info=0x7f050016;
-    public static final int italic=0x7f050017;
-    public static final int left=0x7f050018;
-    public static final int line1=0x7f050019;
-    public static final int line3=0x7f05001a;
-    public static final int none=0x7f05001b;
-    public static final int normal=0x7f05001c;
-    public static final int notification_background=0x7f05001d;
-    public static final int notification_main_column=0x7f05001e;
-    public static final int notification_main_column_container=0x7f05001f;
-    public static final int right=0x7f050020;
-    public static final int right_icon=0x7f050021;
-    public static final int right_side=0x7f050022;
-    public static final int start=0x7f050023;
-    public static final int tag_transition_group=0x7f050024;
-    public static final int tag_unhandled_key_event_manager=0x7f050025;
-    public static final int tag_unhandled_key_listeners=0x7f050026;
-    public static final int text=0x7f050027;
-    public static final int text2=0x7f050028;
-    public static final int time=0x7f050029;
-    public static final int title=0x7f05002a;
-    public static final int top=0x7f05002b;
+    public static final int accessibility_action_clickable_span=0x7f050000;
+    public static final int accessibility_custom_action_0=0x7f050001;
+    public static final int accessibility_custom_action_1=0x7f050002;
+    public static final int accessibility_custom_action_10=0x7f050003;
+    public static final int accessibility_custom_action_11=0x7f050004;
+    public static final int accessibility_custom_action_12=0x7f050005;
+    public static final int accessibility_custom_action_13=0x7f050006;
+    public static final int accessibility_custom_action_14=0x7f050007;
+    public static final int accessibility_custom_action_15=0x7f050008;
+    public static final int accessibility_custom_action_16=0x7f050009;
+    public static final int accessibility_custom_action_17=0x7f05000a;
+    public static final int accessibility_custom_action_18=0x7f05000b;
+    public static final int accessibility_custom_action_19=0x7f05000c;
+    public static final int accessibility_custom_action_2=0x7f05000d;
+    public static final int accessibility_custom_action_20=0x7f05000e;
+    public static final int accessibility_custom_action_21=0x7f05000f;
+    public static final int accessibility_custom_action_22=0x7f050010;
+    public static final int accessibility_custom_action_23=0x7f050011;
+    public static final int accessibility_custom_action_24=0x7f050012;
+    public static final int accessibility_custom_action_25=0x7f050013;
+    public static final int accessibility_custom_action_26=0x7f050014;
+    public static final int accessibility_custom_action_27=0x7f050015;
+    public static final int accessibility_custom_action_28=0x7f050016;
+    public static final int accessibility_custom_action_29=0x7f050017;
+    public static final int accessibility_custom_action_3=0x7f050018;
+    public static final int accessibility_custom_action_30=0x7f050019;
+    public static final int accessibility_custom_action_31=0x7f05001a;
+    public static final int accessibility_custom_action_4=0x7f05001b;
+    public static final int accessibility_custom_action_5=0x7f05001c;
+    public static final int accessibility_custom_action_6=0x7f05001d;
+    public static final int accessibility_custom_action_7=0x7f05001e;
+    public static final int accessibility_custom_action_8=0x7f05001f;
+    public static final int accessibility_custom_action_9=0x7f050020;
+    public static final int action_container=0x7f050021;
+    public static final int action_divider=0x7f050022;
+    public static final int action_image=0x7f050023;
+    public static final int action_text=0x7f050024;
+    public static final int actions=0x7f050025;
+    public static final int androidx_window_activity_scope=0x7f050026;
+    public static final int async=0x7f050027;
+    public static final int blocking=0x7f050028;
+    public static final int chronometer=0x7f050029;
+    public static final int dialog_button=0x7f05002a;
+    public static final int forever=0x7f05002b;
+    public static final int icon=0x7f05002c;
+    public static final int icon_group=0x7f05002d;
+    public static final int info=0x7f05002e;
+    public static final int italic=0x7f05002f;
+    public static final int line1=0x7f050030;
+    public static final int line3=0x7f050031;
+    public static final int locale=0x7f050032;
+    public static final int ltr=0x7f050033;
+    public static final int normal=0x7f050034;
+    public static final int notification_background=0x7f050035;
+    public static final int notification_main_column=0x7f050036;
+    public static final int notification_main_column_container=0x7f050037;
+    public static final int right_icon=0x7f050038;
+    public static final int right_side=0x7f050039;
+    public static final int rtl=0x7f05003a;
+    public static final int tag_accessibility_actions=0x7f05003b;
+    public static final int tag_accessibility_clickable_spans=0x7f05003c;
+    public static final int tag_accessibility_heading=0x7f05003d;
+    public static final int tag_accessibility_pane_title=0x7f05003e;
+    public static final int tag_on_apply_window_listener=0x7f05003f;
+    public static final int tag_on_receive_content_listener=0x7f050040;
+    public static final int tag_on_receive_content_mime_types=0x7f050041;
+    public static final int tag_screen_reader_focusable=0x7f050042;
+    public static final int tag_state_description=0x7f050043;
+    public static final int tag_transition_group=0x7f050044;
+    public static final int tag_unhandled_key_event_manager=0x7f050045;
+    public static final int tag_unhandled_key_listeners=0x7f050046;
+    public static final int tag_window_insets_animation_callback=0x7f050047;
+    public static final int text=0x7f050048;
+    public static final int text2=0x7f050049;
+    public static final int time=0x7f05004a;
+    public static final int title=0x7f05004b;
   }
   public static final class integer {
     public static final int status_bar_notification_info_maxnum=0x7f060000;
   }
   public static final class layout {
-    public static final int notification_action=0x7f070000;
-    public static final int notification_action_tombstone=0x7f070001;
-    public static final int notification_template_custom_big=0x7f070002;
-    public static final int notification_template_icon_group=0x7f070003;
-    public static final int notification_template_part_chronometer=0x7f070004;
-    public static final int notification_template_part_time=0x7f070005;
+    public static final int custom_dialog=0x7f070000;
+    public static final int notification_action=0x7f070001;
+    public static final int notification_action_tombstone=0x7f070002;
+    public static final int notification_template_custom_big=0x7f070003;
+    public static final int notification_template_icon_group=0x7f070004;
+    public static final int notification_template_part_chronometer=0x7f070005;
+    public static final int notification_template_part_time=0x7f070006;
   }
   public static final class mipmap {
     public static final int ic_launcher=0x7f080000;
@@ -375,9 +418,114 @@ public final class R {
     public static final int TextAppearance_Compat_Notification_Title=0x7f0a0005;
     public static final int Widget_Compat_NotificationActionContainer=0x7f0a0006;
     public static final int Widget_Compat_NotificationActionText=0x7f0a0007;
-    public static final int Widget_Support_CoordinatorLayout=0x7f0a0008;
   }
   public static final class styleable {
+    /**
+     * Attributes that can be used with a ActivityFilter.
+     * <p>Includes the following attributes:</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Attribute</th><th>Description</th></tr>
+     * <tr><td><code>{@link #ActivityFilter_activityAction com.oneday.example:activityAction}</code></td><td>Action used for activity launch.</td></tr>
+     * <tr><td><code>{@link #ActivityFilter_activityName com.oneday.example:activityName}</code></td><td>Component name of the primary activity in the split.</td></tr>
+     * </table>
+     * @see #ActivityFilter_activityAction
+     * @see #ActivityFilter_activityName
+     */
+    public static final int[] ActivityFilter={
+      0x7f010000, 0x7f010001
+    };
+    /**
+     * <p>
+     * @attr description
+     * Action used for activity launch. May be empty. Must not contain wildcards.
+     *
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     *
+     * @attr name com.oneday.example:activityAction
+     */
+    public static final int ActivityFilter_activityAction=0;
+    /**
+     * <p>
+     * @attr description
+     * Component name of the primary activity in the split. Must be non-empty. Can contain a
+     * single wildcard at the end.
+     *
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     *
+     * @attr name com.oneday.example:activityName
+     */
+    public static final int ActivityFilter_activityName=1;
+    /**
+     * Attributes that can be used with a ActivityRule.
+     * <p>Includes the following attributes:</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Attribute</th><th>Description</th></tr>
+     * <tr><td><code>{@link #ActivityRule_alwaysExpand com.oneday.example:alwaysExpand}</code></td><td>Whether the activity should always be expanded on launch.</td></tr>
+     * </table>
+     * @see #ActivityRule_alwaysExpand
+     */
+    public static final int[] ActivityRule={
+      0x7f010003
+    };
+    /**
+     * <p>
+     * @attr description
+     * Whether the activity should always be expanded on launch.
+     *
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     *
+     * @attr name com.oneday.example:alwaysExpand
+     */
+    public static final int ActivityRule_alwaysExpand=0;
+    /**
+     * Attributes that can be used with a Capability.
+     * <p>Includes the following attributes:</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Attribute</th><th>Description</th></tr>
+     * <tr><td><code>{@link #Capability_queryPatterns com.oneday.example:queryPatterns}</code></td><td>Resource reference to the string array of query patterns for a custom capability.</td></tr>
+     * <tr><td><code>{@link #Capability_shortcutMatchRequired com.oneday.example:shortcutMatchRequired}</code></td><td>Indicates whether a parameter in a capability template can only contain a matched
+     * shortcut id and not an arbitrary string.</td></tr>
+     * </table>
+     * @see #Capability_queryPatterns
+     * @see #Capability_shortcutMatchRequired
+     */
+    public static final int[] Capability={
+      0x7f010015, 0x7f010018
+    };
+    /**
+     * <p>
+     * @attr description
+     * Resource reference to the string array of query patterns for a custom capability.
+     *
+     * <p>May be a reference to another resource, in the form
+     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
+     * attribute in the form
+     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
+     *
+     * @attr name com.oneday.example:queryPatterns
+     */
+    public static final int Capability_queryPatterns=0;
+    /**
+     * <p>
+     * @attr description
+     * Indicates whether a parameter in a capability template can only contain a matched
+     * shortcut id and not an arbitrary string.
+     *
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     *
+     * @attr name com.oneday.example:shortcutMatchRequired
+     */
+    public static final int Capability_shortcutMatchRequired=1;
     /**
      * Attributes that can be used with a ColorStateListItem.
      * <p>Includes the following attributes:</p>
@@ -394,7 +542,7 @@ public final class R {
      * @see #ColorStateListItem_alpha
      */
     public static final int[] ColorStateListItem={
-      0x010101a5, 0x0101031f, 0x7f010000
+      0x010101a5, 0x0101031f, 0x7f010002
     };
     /**
      * <p>
@@ -428,237 +576,6 @@ public final class R {
      */
     public static final int ColorStateListItem_alpha=2;
     /**
-     * Attributes that can be used with a CoordinatorLayout.
-     * <p>Includes the following attributes:</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Attribute</th><th>Description</th></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_keylines com.oneday.example:keylines}</code></td><td>A reference to an array of integers representing the
-     * locations of horizontal keylines in dp from the starting edge.</td></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_statusBarBackground com.oneday.example:statusBarBackground}</code></td><td>Drawable to display behind the status bar when the view is set to draw behind it.</td></tr>
-     * </table>
-     * @see #CoordinatorLayout_keylines
-     * @see #CoordinatorLayout_statusBarBackground
-     */
-    public static final int[] CoordinatorLayout={
-      0x7f01000c, 0x7f010013
-    };
-    /**
-     * <p>
-     * @attr description
-     * A reference to an array of integers representing the
-     * locations of horizontal keylines in dp from the starting edge.
-     * Child views can refer to these keylines for alignment using
-     * layout_keyline="index" where index is a 0-based index into
-     * this array.
-     *
-     * <p>May be a reference to another resource, in the form
-     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
-     * attribute in the form
-     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
-     *
-     * @attr name com.oneday.example:keylines
-     */
-    public static final int CoordinatorLayout_keylines=0;
-    /**
-     * <p>
-     * @attr description
-     * Drawable to display behind the status bar when the view is set to draw behind it.
-     *
-     * <p>May be a reference to another resource, in the form
-     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
-     * attribute in the form
-     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
-     * <p>May be a color value, in the form of "<code>#<i>rgb</i></code>",
-     * "<code>#<i>argb</i></code>", "<code>#<i>rrggbb</i></code>", or
-     * "<code>#<i>aarrggbb</i></code>".
-     *
-     * @attr name com.oneday.example:statusBarBackground
-     */
-    public static final int CoordinatorLayout_statusBarBackground=1;
-    /**
-     * Attributes that can be used with a CoordinatorLayout_Layout.
-     * <p>Includes the following attributes:</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Attribute</th><th>Description</th></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_Layout_android_layout_gravity android:layout_gravity}</code></td><td></td></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_Layout_layout_anchor com.oneday.example:layout_anchor}</code></td><td>The id of an anchor view that this view should position relative to.</td></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_Layout_layout_anchorGravity com.oneday.example:layout_anchorGravity}</code></td><td>Specifies how an object should position relative to an anchor, on both the X and Y axes,
-     * within its parent's bounds.</td></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_Layout_layout_behavior com.oneday.example:layout_behavior}</code></td><td>The class name of a Behavior class defining special runtime behavior
-     * for this child view.</td></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_Layout_layout_dodgeInsetEdges com.oneday.example:layout_dodgeInsetEdges}</code></td><td>Specifies how this view dodges the inset edges of the CoordinatorLayout.</td></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_Layout_layout_insetEdge com.oneday.example:layout_insetEdge}</code></td><td>Specifies how this view insets the CoordinatorLayout and make some other views
-     * dodge it.</td></tr>
-     * <tr><td><code>{@link #CoordinatorLayout_Layout_layout_keyline com.oneday.example:layout_keyline}</code></td><td>The index of a keyline this view should position relative to.</td></tr>
-     * </table>
-     * @see #CoordinatorLayout_Layout_android_layout_gravity
-     * @see #CoordinatorLayout_Layout_layout_anchor
-     * @see #CoordinatorLayout_Layout_layout_anchorGravity
-     * @see #CoordinatorLayout_Layout_layout_behavior
-     * @see #CoordinatorLayout_Layout_layout_dodgeInsetEdges
-     * @see #CoordinatorLayout_Layout_layout_insetEdge
-     * @see #CoordinatorLayout_Layout_layout_keyline
-     */
-    public static final int[] CoordinatorLayout_Layout={
-      0x010100b3, 0x7f01000d, 0x7f01000e, 0x7f01000f, 
-      0x7f010010, 0x7f010011, 0x7f010012
-    };
-    /**
-     * <p>This symbol is the offset where the {@link android.R.attr#layout_gravity}
-     * attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
-     *
-     * <p>Must be one or more (separated by '|') of the following constant values.</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-     * <tr><td>bottom</td><td>50</td><td></td></tr>
-     * <tr><td>center</td><td>11</td><td></td></tr>
-     * <tr><td>center_horizontal</td><td>1</td><td></td></tr>
-     * <tr><td>center_vertical</td><td>10</td><td></td></tr>
-     * <tr><td>clip_horizontal</td><td>8</td><td></td></tr>
-     * <tr><td>clip_vertical</td><td>80</td><td></td></tr>
-     * <tr><td>end</td><td>800005</td><td></td></tr>
-     * <tr><td>fill</td><td>77</td><td></td></tr>
-     * <tr><td>fill_horizontal</td><td>7</td><td></td></tr>
-     * <tr><td>fill_vertical</td><td>70</td><td></td></tr>
-     * <tr><td>left</td><td>3</td><td></td></tr>
-     * <tr><td>right</td><td>5</td><td></td></tr>
-     * <tr><td>start</td><td>800003</td><td></td></tr>
-     * <tr><td>top</td><td>30</td><td></td></tr>
-     * </table>
-     *
-     * @attr name android:layout_gravity
-     */
-    public static final int CoordinatorLayout_Layout_android_layout_gravity=0;
-    /**
-     * <p>
-     * @attr description
-     * The id of an anchor view that this view should position relative to.
-     *
-     * <p>May be a reference to another resource, in the form
-     * "<code>@[+][<i>package</i>:]<i>type</i>/<i>name</i></code>" or a theme
-     * attribute in the form
-     * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
-     *
-     * @attr name com.oneday.example:layout_anchor
-     */
-    public static final int CoordinatorLayout_Layout_layout_anchor=1;
-    /**
-     * <p>
-     * @attr description
-     * Specifies how an object should position relative to an anchor, on both the X and Y axes,
-     * within its parent's bounds.
-     *
-     * <p>Must be one or more (separated by '|') of the following constant values.</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-     * <tr><td>bottom</td><td>50</td><td>Push object to the bottom of its container, not changing its size.</td></tr>
-     * <tr><td>center</td><td>11</td><td>Place the object in the center of its container in both the vertical and horizontal axis, not changing its size.</td></tr>
-     * <tr><td>center_horizontal</td><td>1</td><td>Place object in the horizontal center of its container, not changing its size.</td></tr>
-     * <tr><td>center_vertical</td><td>10</td><td>Place object in the vertical center of its container, not changing its size.</td></tr>
-     * <tr><td>clip_horizontal</td><td>8</td><td>Additional option that can be set to have the left and/or right edges of
-     * the child clipped to its container's bounds.
-     * The clip will be based on the horizontal gravity: a left gravity will clip the right
-     * edge, a right gravity will clip the left edge, and neither will clip both edges.</td></tr>
-     * <tr><td>clip_vertical</td><td>80</td><td>Additional option that can be set to have the top and/or bottom edges of
-     * the child clipped to its container's bounds.
-     * The clip will be based on the vertical gravity: a top gravity will clip the bottom
-     * edge, a bottom gravity will clip the top edge, and neither will clip both edges.</td></tr>
-     * <tr><td>end</td><td>800005</td><td>Push object to the end of its container, not changing its size.</td></tr>
-     * <tr><td>fill</td><td>77</td><td>Grow the horizontal and vertical size of the object if needed so it completely fills its container.</td></tr>
-     * <tr><td>fill_horizontal</td><td>7</td><td>Grow the horizontal size of the object if needed so it completely fills its container.</td></tr>
-     * <tr><td>fill_vertical</td><td>70</td><td>Grow the vertical size of the object if needed so it completely fills its container.</td></tr>
-     * <tr><td>left</td><td>3</td><td>Push object to the left of its container, not changing its size.</td></tr>
-     * <tr><td>right</td><td>5</td><td>Push object to the right of its container, not changing its size.</td></tr>
-     * <tr><td>start</td><td>800003</td><td>Push object to the beginning of its container, not changing its size.</td></tr>
-     * <tr><td>top</td><td>30</td><td>Push object to the top of its container, not changing its size.</td></tr>
-     * </table>
-     *
-     * @attr name com.oneday.example:layout_anchorGravity
-     */
-    public static final int CoordinatorLayout_Layout_layout_anchorGravity=2;
-    /**
-     * <p>
-     * @attr description
-     * The class name of a Behavior class defining special runtime behavior
-     * for this child view.
-     *
-     * <p>May be a string value, using '\\;' to escape characters such as
-     * '\\n' or '\\uxxxx' for a unicode character;
-     *
-     * @attr name com.oneday.example:layout_behavior
-     */
-    public static final int CoordinatorLayout_Layout_layout_behavior=3;
-    /**
-     * <p>
-     * @attr description
-     * Specifies how this view dodges the inset edges of the CoordinatorLayout.
-     *
-     * <p>Must be one or more (separated by '|') of the following constant values.</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-     * <tr><td>all</td><td>77</td><td>Dodge all the inset edges.</td></tr>
-     * <tr><td>bottom</td><td>50</td><td>Dodge the bottom inset edge.</td></tr>
-     * <tr><td>end</td><td>800005</td><td>Dodge the end inset edge.</td></tr>
-     * <tr><td>left</td><td>3</td><td>Dodge the left inset edge.</td></tr>
-     * <tr><td>none</td><td>0</td><td>Don't dodge any edges</td></tr>
-     * <tr><td>right</td><td>5</td><td>Dodge the right inset edge.</td></tr>
-     * <tr><td>start</td><td>800003</td><td>Dodge the start inset edge.</td></tr>
-     * <tr><td>top</td><td>30</td><td>Dodge the top inset edge.</td></tr>
-     * </table>
-     *
-     * @attr name com.oneday.example:layout_dodgeInsetEdges
-     */
-    public static final int CoordinatorLayout_Layout_layout_dodgeInsetEdges=4;
-    /**
-     * <p>
-     * @attr description
-     * Specifies how this view insets the CoordinatorLayout and make some other views
-     * dodge it.
-     *
-     * <p>Must be one of the following constant values.</p>
-     * <table>
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <colgroup align="left" />
-     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-     * <tr><td>bottom</td><td>50</td><td>Inset the bottom edge.</td></tr>
-     * <tr><td>end</td><td>800005</td><td>Inset the end edge.</td></tr>
-     * <tr><td>left</td><td>3</td><td>Inset the left edge.</td></tr>
-     * <tr><td>none</td><td>0</td><td>Don't inset.</td></tr>
-     * <tr><td>right</td><td>5</td><td>Inset the right edge.</td></tr>
-     * <tr><td>start</td><td>800003</td><td>Inset the start edge.</td></tr>
-     * <tr><td>top</td><td>30</td><td>Inset the top edge.</td></tr>
-     * </table>
-     *
-     * @attr name com.oneday.example:layout_insetEdge
-     */
-    public static final int CoordinatorLayout_Layout_layout_insetEdge=5;
-    /**
-     * <p>
-     * @attr description
-     * The index of a keyline this view should position relative to.
-     * android:layout_gravity will affect how the view aligns to the
-     * specified keyline.
-     *
-     * <p>May be an integer value, such as "<code>100</code>".
-     *
-     * @attr name com.oneday.example:layout_keyline
-     */
-    public static final int CoordinatorLayout_Layout_layout_keyline=6;
-    /**
      * Attributes that can be used with a FontFamily.
      * <p>Includes the following attributes:</p>
      * <table>
@@ -671,6 +588,7 @@ public final class R {
      * <tr><td><code>{@link #FontFamily_fontProviderFetchTimeout com.oneday.example:fontProviderFetchTimeout}</code></td><td>The length of the timeout during fetching.</td></tr>
      * <tr><td><code>{@link #FontFamily_fontProviderPackage com.oneday.example:fontProviderPackage}</code></td><td>The package for the Font Provider to be used for the request.</td></tr>
      * <tr><td><code>{@link #FontFamily_fontProviderQuery com.oneday.example:fontProviderQuery}</code></td><td>The query to be sent over to the provider.</td></tr>
+     * <tr><td><code>{@link #FontFamily_fontProviderSystemFontFamily com.oneday.example:fontProviderSystemFontFamily}</code></td><td>Provides the system font family name to check before downloading the font.</td></tr>
      * </table>
      * @see #FontFamily_fontProviderAuthority
      * @see #FontFamily_fontProviderCerts
@@ -678,10 +596,11 @@ public final class R {
      * @see #FontFamily_fontProviderFetchTimeout
      * @see #FontFamily_fontProviderPackage
      * @see #FontFamily_fontProviderQuery
+     * @see #FontFamily_fontProviderSystemFontFamily
      */
     public static final int[] FontFamily={
-      0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 
-      0x7f010007, 0x7f010008
+      0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b, 
+      0x7f01000c, 0x7f01000d, 0x7f01000e
     };
     /**
      * <p>
@@ -787,6 +706,20 @@ public final class R {
      */
     public static final int FontFamily_fontProviderQuery=5;
     /**
+     * <p>
+     * @attr description
+     * Provides the system font family name to check before downloading the font. For
+     * example if the fontProviderQuery asked for "Sans Serif", it is possible to define
+     * fontProviderSystemFontFamily as "sans-serif" to tell the system to use "sans-serif" font
+     * family if it exists on the system.
+     *
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     *
+     * @attr name com.oneday.example:fontProviderSystemFontFamily
+     */
+    public static final int FontFamily_fontProviderSystemFontFamily=6;
+    /**
      * Attributes that can be used with a FontFamilyFont.
      * <p>Includes the following attributes:</p>
      * <table>
@@ -817,8 +750,8 @@ public final class R {
      */
     public static final int[] FontFamilyFont={
       0x01010532, 0x01010533, 0x0101053f, 0x0101056f, 
-      0x01010570, 0x7f010002, 0x7f010009, 0x7f01000a, 
-      0x7f01000b, 0x7f010014
+      0x01010570, 0x7f010007, 0x7f01000f, 0x7f010010, 
+      0x7f010011, 0x7f01001d
     };
     /**
      * <p>This symbol is the offset where the {@link android.R.attr#font}
@@ -1194,5 +1127,267 @@ public final class R {
      * @attr name android:offset
      */
     public static final int GradientColorItem_android_offset=1;
+    /**
+     * Attributes that can be used with a SplitPairFilter.
+     * <p>Includes the following attributes:</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Attribute</th><th>Description</th></tr>
+     * <tr><td><code>{@link #SplitPairFilter_primaryActivityName com.oneday.example:primaryActivityName}</code></td><td>Component name of the primary activity in the split.</td></tr>
+     * <tr><td><code>{@link #SplitPairFilter_secondaryActivityAction com.oneday.example:secondaryActivityAction}</code></td><td>Action used for secondary activity launch.</td></tr>
+     * <tr><td><code>{@link #SplitPairFilter_secondaryActivityName com.oneday.example:secondaryActivityName}</code></td><td>Component name of the secondary activity in the split.</td></tr>
+     * </table>
+     * @see #SplitPairFilter_primaryActivityName
+     * @see #SplitPairFilter_secondaryActivityAction
+     * @see #SplitPairFilter_secondaryActivityName
+     */
+    public static final int[] SplitPairFilter={
+      0x7f010014, 0x7f010016, 0x7f010017
+    };
+    /**
+     * <p>
+     * @attr description
+     * Component name of the primary activity in the split. Must be non-empty. Can contain a
+     * wildcard at the end or instead of package name and/or class name.
+     *
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     *
+     * @attr name com.oneday.example:primaryActivityName
+     */
+    public static final int SplitPairFilter_primaryActivityName=0;
+    /**
+     * <p>
+     * @attr description
+     * Action used for secondary activity launch. May be empty. Must not contain wildcards.
+     *
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     *
+     * @attr name com.oneday.example:secondaryActivityAction
+     */
+    public static final int SplitPairFilter_secondaryActivityAction=1;
+    /**
+     * <p>
+     * @attr description
+     * Component name of the secondary activity in the split. Must be non-empty. Can contain a
+     * wildcard at the end or instead of package name and/or class name.
+     *
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     *
+     * @attr name com.oneday.example:secondaryActivityName
+     */
+    public static final int SplitPairFilter_secondaryActivityName=2;
+    /**
+     * Attributes that can be used with a SplitPairRule.
+     * <p>Includes the following attributes:</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Attribute</th><th>Description</th></tr>
+     * <tr><td><code>{@link #SplitPairRule_clearTop com.oneday.example:clearTop}</code></td><td>If there is an existing split with the same primary container, indicates whether the
+     * existing secondary container on top and all activities in it should be destroyed when a new
+     * split is created using this rule.</td></tr>
+     * <tr><td><code>{@link #SplitPairRule_finishPrimaryWithSecondary com.oneday.example:finishPrimaryWithSecondary}</code></td><td>When all activities are finished in the secondary container, the activity in the
+     * primary container that created the split should also be finished.</td></tr>
+     * <tr><td><code>{@link #SplitPairRule_finishSecondaryWithPrimary com.oneday.example:finishSecondaryWithPrimary}</code></td><td>When all activities are finished in the primary container, the activities in the
+     * secondary container in the split should also be finished.</td></tr>
+     * <tr><td><code>{@link #SplitPairRule_splitLayoutDirection com.oneday.example:splitLayoutDirection}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SplitPairRule_splitMinSmallestWidth com.oneday.example:splitMinSmallestWidth}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SplitPairRule_splitMinWidth com.oneday.example:splitMinWidth}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SplitPairRule_splitRatio com.oneday.example:splitRatio}</code></td><td></td></tr>
+     * </table>
+     * @see #SplitPairRule_clearTop
+     * @see #SplitPairRule_finishPrimaryWithSecondary
+     * @see #SplitPairRule_finishSecondaryWithPrimary
+     * @see #SplitPairRule_splitLayoutDirection
+     * @see #SplitPairRule_splitMinSmallestWidth
+     * @see #SplitPairRule_splitMinWidth
+     * @see #SplitPairRule_splitRatio
+     */
+    public static final int[] SplitPairRule={
+      0x7f010004, 0x7f010005, 0x7f010006, 0x7f010019, 
+      0x7f01001a, 0x7f01001b, 0x7f01001c
+    };
+    /**
+     * <p>
+     * @attr description
+     * If there is an existing split with the same primary container, indicates whether the
+     * existing secondary container on top and all activities in it should be destroyed when a new
+     * split is created using this rule. Otherwise the new secondary will appear on top. Defaults
+     * to "false".
+     *
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     *
+     * @attr name com.oneday.example:clearTop
+     */
+    public static final int SplitPairRule_clearTop=0;
+    /**
+     * <p>
+     * @attr description
+     * When all activities are finished in the secondary container, the activity in the
+     * primary container that created the split should also be finished. Defaults to "false".
+     *
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     *
+     * @attr name com.oneday.example:finishPrimaryWithSecondary
+     */
+    public static final int SplitPairRule_finishPrimaryWithSecondary=1;
+    /**
+     * <p>
+     * @attr description
+     * When all activities are finished in the primary container, the activities in the
+     * secondary container in the split should also be finished. Defaults to "true".
+     *
+     * <p>May be a boolean value, such as "<code>true</code>" or
+     * "<code>false</code>".
+     *
+     * @attr name com.oneday.example:finishSecondaryWithPrimary
+     */
+    public static final int SplitPairRule_finishSecondaryWithPrimary=2;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitLayoutDirection}
+     * attribute's value can be found in the {@link #SplitPairRule} array.
+     *
+     * <p>Must be one of the following constant values.</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+     * <tr><td>locale</td><td>0</td><td></td></tr>
+     * <tr><td>ltr</td><td>1</td><td></td></tr>
+     * <tr><td>rtl</td><td>2</td><td></td></tr>
+     * </table>
+     *
+     * @attr name com.oneday.example:splitLayoutDirection
+     */
+    public static final int SplitPairRule_splitLayoutDirection=3;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitMinSmallestWidth}
+     * attribute's value can be found in the {@link #SplitPairRule} array.
+     *
+     * <p>May be a dimension value, which is a floating point number appended with a
+     * unit such as "<code>14.5sp</code>".
+     * Available units are: px (pixels), dp (density-independent pixels),
+     * sp (scaled pixels based on preferred font size), in (inches), and
+     * mm (millimeters).
+     *
+     * @attr name com.oneday.example:splitMinSmallestWidth
+     */
+    public static final int SplitPairRule_splitMinSmallestWidth=4;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitMinWidth}
+     * attribute's value can be found in the {@link #SplitPairRule} array.
+     *
+     * <p>May be a dimension value, which is a floating point number appended with a
+     * unit such as "<code>14.5sp</code>".
+     * Available units are: px (pixels), dp (density-independent pixels),
+     * sp (scaled pixels based on preferred font size), in (inches), and
+     * mm (millimeters).
+     *
+     * @attr name com.oneday.example:splitMinWidth
+     */
+    public static final int SplitPairRule_splitMinWidth=5;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitRatio}
+     * attribute's value can be found in the {@link #SplitPairRule} array.
+     *
+     * <p>May be a floating point value, such as "<code>1.2</code>".
+     *
+     * @attr name com.oneday.example:splitRatio
+     */
+    public static final int SplitPairRule_splitRatio=6;
+    /**
+     * Attributes that can be used with a SplitPlaceholderRule.
+     * <p>Includes the following attributes:</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Attribute</th><th>Description</th></tr>
+     * <tr><td><code>{@link #SplitPlaceholderRule_placeholderActivityName com.oneday.example:placeholderActivityName}</code></td><td>Component name of the placeholder activity in the split.</td></tr>
+     * <tr><td><code>{@link #SplitPlaceholderRule_splitLayoutDirection com.oneday.example:splitLayoutDirection}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SplitPlaceholderRule_splitMinSmallestWidth com.oneday.example:splitMinSmallestWidth}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SplitPlaceholderRule_splitMinWidth com.oneday.example:splitMinWidth}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SplitPlaceholderRule_splitRatio com.oneday.example:splitRatio}</code></td><td></td></tr>
+     * </table>
+     * @see #SplitPlaceholderRule_placeholderActivityName
+     * @see #SplitPlaceholderRule_splitLayoutDirection
+     * @see #SplitPlaceholderRule_splitMinSmallestWidth
+     * @see #SplitPlaceholderRule_splitMinWidth
+     * @see #SplitPlaceholderRule_splitRatio
+     */
+    public static final int[] SplitPlaceholderRule={
+      0x7f010013, 0x7f010019, 0x7f01001a, 0x7f01001b, 
+      0x7f01001c
+    };
+    /**
+     * <p>
+     * @attr description
+     * Component name of the placeholder activity in the split. Must be non-empty.
+     *
+     * <p>May be a string value, using '\\;' to escape characters such as
+     * '\\n' or '\\uxxxx' for a unicode character;
+     *
+     * @attr name com.oneday.example:placeholderActivityName
+     */
+    public static final int SplitPlaceholderRule_placeholderActivityName=0;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitLayoutDirection}
+     * attribute's value can be found in the {@link #SplitPlaceholderRule} array.
+     *
+     * <p>Must be one of the following constant values.</p>
+     * <table>
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <colgroup align="left" />
+     * <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+     * <tr><td>locale</td><td>0</td><td></td></tr>
+     * <tr><td>ltr</td><td>1</td><td></td></tr>
+     * <tr><td>rtl</td><td>2</td><td></td></tr>
+     * </table>
+     *
+     * @attr name com.oneday.example:splitLayoutDirection
+     */
+    public static final int SplitPlaceholderRule_splitLayoutDirection=1;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitMinSmallestWidth}
+     * attribute's value can be found in the {@link #SplitPlaceholderRule} array.
+     *
+     * <p>May be a dimension value, which is a floating point number appended with a
+     * unit such as "<code>14.5sp</code>".
+     * Available units are: px (pixels), dp (density-independent pixels),
+     * sp (scaled pixels based on preferred font size), in (inches), and
+     * mm (millimeters).
+     *
+     * @attr name com.oneday.example:splitMinSmallestWidth
+     */
+    public static final int SplitPlaceholderRule_splitMinSmallestWidth=2;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitMinWidth}
+     * attribute's value can be found in the {@link #SplitPlaceholderRule} array.
+     *
+     * <p>May be a dimension value, which is a floating point number appended with a
+     * unit such as "<code>14.5sp</code>".
+     * Available units are: px (pixels), dp (density-independent pixels),
+     * sp (scaled pixels based on preferred font size), in (inches), and
+     * mm (millimeters).
+     *
+     * @attr name com.oneday.example:splitMinWidth
+     */
+    public static final int SplitPlaceholderRule_splitMinWidth=3;
+    /**
+     * <p>This symbol is the offset where the {@link com.oneday.example.R.attr#splitRatio}
+     * attribute's value can be found in the {@link #SplitPlaceholderRule} array.
+     *
+     * <p>May be a floating point value, such as "<code>1.2</code>".
+     *
+     * @attr name com.oneday.example:splitRatio
+     */
+    public static final int SplitPlaceholderRule_splitRatio=4;
   }
 }

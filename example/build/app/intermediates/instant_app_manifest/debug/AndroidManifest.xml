@@ -7,7 +7,7 @@
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="28" />
+        android:targetSdkVersion="32" />
     <!--
          Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
@@ -21,7 +21,7 @@
          FlutterApplication and put your custom class here.
     -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="com.oneday.example.Application"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
@@ -46,6 +46,13 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <uses-library
+            android:name="androidx.window.extensions"
+            android:required="false" />
+        <uses-library
+            android:name="androidx.window.sidecar"
+            android:required="false" />
     </application>
 
 </manifest>

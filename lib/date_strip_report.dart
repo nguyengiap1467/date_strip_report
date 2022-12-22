@@ -1,4 +1,6 @@
 library date_strip_report;
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
@@ -6,15 +8,15 @@ import 'i18n_calendar_strip.dart';
 
 
 class DateStripReport extends StatefulWidget {
-  final Function onDateSelected;
-  final DateTime startDate;
-  final DateTime endDate;
+  final Function? onDateSelected;
+  final DateTime? startDate;
+  final DateTime? endDate;
   final bool isShowMonth;
   final bool isShowQuarter;
   final bool isShowHalfYear;
   final bool isShowYear;
-  final Icon rightIcon;
-  final Icon leftIcon;
+  final Icon? rightIcon;
+  final Icon? leftIcon;
   final Color navigationColor;
   final Color navigationDisableColor;
   final Color selectedColor;
@@ -23,7 +25,7 @@ class DateStripReport extends StatefulWidget {
   final LocaleType locale;
 
   DateStripReport({
-    @required this.onDateSelected,
+    this.onDateSelected,
     this.startDate,
     this.endDate,
     this.rightIcon,
@@ -47,12 +49,12 @@ class DateStripReport extends StatefulWidget {
 class DateStripReportState extends State<DateStripReport>
     with TickerProviderStateMixin {
   bool enbaleNext = true, enbalePrevious = true;
-  DateType _dateType;
+  DateType? _dateType;
   DateTime _selectedDate = DateTime.now();
-  int _selectedQuarter;
-  int _selectedHaft;
+  int? _selectedQuarter;
+  int? _selectedHaft;
 
-  DateStripReportState(DateTime startDate, DateTime endDate) {
+  DateStripReportState(DateTime? startDate, DateTime? endDate) {
     runPresetsAndExceptions(_selectedDate, startDate, endDate);
   }
 
@@ -122,8 +124,8 @@ class DateStripReportState extends State<DateStripReport>
     } else if (widget.locale == LocaleType.ko) {
       return '$month월';
     } else {
-      List monthStrings = i18nObjInLocale(widget.locale)['monthLong'];
-      return monthStrings[month - 1];
+      List<String>? monthStrings = i18nObjInLocale(widget.locale)!['monthLong'] as List<String>?;
+      return monthStrings![month - 1];
     }
   }
   String _localeQuarter(int quarter) {
@@ -133,10 +135,11 @@ class DateStripReportState extends State<DateStripReport>
     } else if (widget.locale == LocaleType.ko) {
       return '$quarter';
     } else {
-      List quarterStrings = i18nObjInLocale(widget.locale)['quarter'];
-      return quarterStrings[quarter - 1];
+      List<String>? quarterStrings = i18nObjInLocale(widget.locale)!['quarter'] as List<String>?;
+      return quarterStrings![quarter - 1];
     }
   }
+
   String _localeHalfYear(int number) {
     print(number);
     if (widget.locale == LocaleType.zh || widget.locale == LocaleType.jp) {
@@ -144,8 +147,8 @@ class DateStripReportState extends State<DateStripReport>
     } else if (widget.locale == LocaleType.ko) {
       return '$number';
     } else {
-      List textStrings = i18nObjInLocale(widget.locale)['halfYear'];
-      return textStrings[number - 1];
+      List<String>? textStrings = i18nObjInLocale(widget.locale)!['halfYear'] as List<String>?;
+      return textStrings![number - 1];
     }
   }
 
@@ -156,7 +159,7 @@ class DateStripReportState extends State<DateStripReport>
     } else if (widget.locale == LocaleType.ko) {
       return '일';
     } else {
-      return i18nObjInLocale(widget.locale)['monthly'];
+      return i18nObjInLocale(widget.locale) != null ? i18nObjInLocale(widget.locale)!['monthly'].toString() : "";
     }
   }
   String _localeQuarterly() {
@@ -165,7 +168,7 @@ class DateStripReportState extends State<DateStripReport>
     } else if (widget.locale == LocaleType.ko) {
       return '일';
     } else {
-      return i18nObjInLocale(widget.locale)['quarterly'];
+      return i18nObjInLocale(widget.locale) != null ? i18nObjInLocale(widget.locale)!['quarterly'].toString() : "";
     }
   }
   String _localeHalfYearly() {
@@ -174,7 +177,7 @@ class DateStripReportState extends State<DateStripReport>
     } else if (widget.locale == LocaleType.ko) {
       return '일';
     } else {
-      return i18nObjInLocale(widget.locale)['halfYearly'];
+      return i18nObjInLocale(widget.locale) != null ? i18nObjInLocale(widget.locale)!['halfYearly'].toString() : "";
     }
   }
   String _localeYearly() {
@@ -183,7 +186,7 @@ class DateStripReportState extends State<DateStripReport>
     } else if (widget.locale == LocaleType.ko) {
       return '일';
     } else {
-      return i18nObjInLocale(widget.locale)['yearly'];
+      return i18nObjInLocale(widget.locale) != null ? i18nObjInLocale(widget.locale)!['yearly'].toString() : "";
     }
   }
 
@@ -215,25 +218,25 @@ class DateStripReportState extends State<DateStripReport>
       result.info = _localeMonth(_selectedDate.month);
     } else if (DateType.quarter == _dateType) {
       _selectedQuarter = (_selectedDate.month/3).ceil();
-      result.fromDate = new DateTime(_selectedDate.year,((_selectedQuarter-1)*3)+1,1);
-      result.toDate = new DateTime(_selectedDate.year,((_selectedQuarter)*3)+1,1).subtract(Duration(days: 1));
-      result.info = _localeQuarter(_selectedQuarter);
+      result.fromDate = new DateTime(_selectedDate.year,(((_selectedQuarter ?? 1) -1)*3)+1,1);
+      result.toDate = new DateTime(_selectedDate.year,((_selectedQuarter??1)*3)+1,1).subtract(Duration(days: 1));
+      result.info = _localeQuarter(_selectedQuarter??1);
     } else if (DateType.half == _dateType) {
       _selectedHaft = (_selectedDate.month/6).ceil();
-      result.fromDate = new DateTime(_selectedDate.year,((_selectedHaft-1)*6)+1,1);
-      result.toDate = new DateTime(_selectedDate.year,((_selectedHaft)*6)+1,1).subtract(Duration(days: 1));
-      result.info = _localeHalfYear(_selectedHaft);
+      result.fromDate = new DateTime(_selectedDate.year,(((_selectedHaft??1)-1)*6)+1,1);
+      result.toDate = new DateTime(_selectedDate.year,((_selectedHaft??1)*6)+1,1).subtract(Duration(days: 1));
+      result.info = _localeHalfYear(_selectedHaft??1);
     }else if (DateType.year == _dateType) {
       result.fromDate = new DateTime(_selectedDate.year,1,1);
       result.toDate = new DateTime(_selectedDate.year+1,1,1).subtract(Duration(days: 1));
       result.info = _localeYear(_selectedDate.year);
     }
-    widget.onDateSelected(result);
+    widget.onDateSelected!(result);
   }
 
   getNextMonth(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).add(months: 1);
+      _selectedDate = Jiffy(_selectedDate).add(months: 1).dateTime;
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(months: 1),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(months: 1),widget.endDate));
       setReturnDate();
@@ -241,7 +244,7 @@ class DateStripReportState extends State<DateStripReport>
   }
   getPreviousMonth(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).subtract(months: 1);
+      _selectedDate = Jiffy(_selectedDate).subtract(months: 1).dateTime;
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(months: 1),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(months: 1),widget.endDate));
       setReturnDate();
@@ -250,7 +253,7 @@ class DateStripReportState extends State<DateStripReport>
 
   getNextQuarter(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).add(months: 3);
+      _selectedDate = Jiffy(_selectedDate).add(months: 3).dateTime;
       _selectedQuarter = (_selectedDate.month/3).ceil();
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(months: 3),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(months: 3),widget.endDate));
@@ -259,7 +262,7 @@ class DateStripReportState extends State<DateStripReport>
   }
   getPreviousQuarter(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).subtract(months: 3);
+      _selectedDate = Jiffy(_selectedDate).subtract(months: 3).dateTime;
       _selectedQuarter = (_selectedDate.month/3).ceil();
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(months: 3),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(months: 3),widget.endDate));
@@ -269,7 +272,7 @@ class DateStripReportState extends State<DateStripReport>
 
   getNextHalf(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).add(months: 6);
+      _selectedDate = Jiffy(_selectedDate).add(months: 6).dateTime;
       _selectedHaft = (_selectedDate.month/6).ceil();
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(months: 6),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(months: 6),widget.endDate));
@@ -278,7 +281,7 @@ class DateStripReportState extends State<DateStripReport>
   }
   getPreviousHalf(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).subtract(months: 6);
+      _selectedDate = Jiffy(_selectedDate).subtract(months: 6).dateTime;
       _selectedHaft = (_selectedDate.month/6).ceil();
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(months: 6),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(months: 6),widget.endDate));
@@ -288,7 +291,7 @@ class DateStripReportState extends State<DateStripReport>
 
   getNextYear(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).add(years: 1);
+      _selectedDate = Jiffy(_selectedDate).add(years: 1).dateTime;
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(years: 1),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(years: 1),widget.endDate));
       setReturnDate();
@@ -296,7 +299,7 @@ class DateStripReportState extends State<DateStripReport>
   }
   getPreviousYear(){
     setState(() {
-      _selectedDate = Jiffy(_selectedDate).subtract(years: 1);
+      _selectedDate = Jiffy(_selectedDate).subtract(years: 1).dateTime;
       enbalePrevious = (widget.startDate == null ||  isDateAfter(Jiffy(_selectedDate).subtract(years: 1),widget.startDate));
       enbaleNext = (widget.endDate == null || isDateBefore(Jiffy(_selectedDate).add(years: 1),widget.endDate));
       setReturnDate();
@@ -370,7 +373,7 @@ class DateStripReportState extends State<DateStripReport>
               children: <Widget>[
                 Text("${_selectedDate.year}", style: TextStyle(fontSize: 15,),),
                 SizedBox(height: 5,),
-                Text(_localeHalfYear(_selectedHaft), style:
+                Text(_localeHalfYear(_selectedHaft??1), style:
                 TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: widget.textColor))
               ],
             ),
@@ -413,7 +416,7 @@ class DateStripReportState extends State<DateStripReport>
               children: <Widget>[
                 Text("${_selectedDate.year}", style: TextStyle(fontSize: 15),),
                 SizedBox(height: 5,),
-                Text(_localeQuarter(_selectedQuarter), style:
+                Text(_localeQuarter(_selectedQuarter??1), style:
                 TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: widget.textColor))
               ],
             ),
@@ -585,12 +588,12 @@ class DateStripReportState extends State<DateStripReport>
 
 class SlideFadeTransition extends StatefulWidget {
   final Widget child;
-  final int delay;
+  final int? delay;
   final String id;
-  final Curve curve;
+  final Curve? curve;
 
   SlideFadeTransition(
-      {@required this.child, @required this.id, this.delay, this.curve});
+      {required this.child, required this.id, this.delay, this.curve});
 
   @override
   SlideFadeTransitionState createState() => SlideFadeTransitionState();
@@ -598,8 +601,8 @@ class SlideFadeTransition extends StatefulWidget {
 
 class SlideFadeTransitionState extends State<SlideFadeTransition>
     with TickerProviderStateMixin {
-  AnimationController _animController;
-  Animation<Offset> _animOffset;
+  late AnimationController _animController;
+  late Animation<Offset> _animOffset;
 
   @override
   void initState() {
@@ -608,7 +611,7 @@ class SlideFadeTransitionState extends State<SlideFadeTransition>
     _animController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     final _curve = CurvedAnimation(
-        curve: widget.curve != null ? widget.curve : Curves.decelerate,
+        curve: widget.curve != null ? widget.curve! : Curves.decelerate,
         parent: _animController);
     _animOffset =
         Tween<Offset>(begin: const Offset(0.0, 0.25), end: Offset.zero)
@@ -618,7 +621,7 @@ class SlideFadeTransitionState extends State<SlideFadeTransition>
       _animController.forward();
     } else {
       _animController.reset();
-      Future.delayed(Duration(milliseconds: widget.delay), () {
+      Future.delayed(Duration(milliseconds: widget.delay??1), () {
         _animController.forward();
       });
     }
@@ -629,7 +632,7 @@ class SlideFadeTransitionState extends State<SlideFadeTransition>
     super.didUpdateWidget(oldWidget);
     if (widget.id != oldWidget.id) {
       _animController.reset();
-      Future.delayed(Duration(milliseconds: widget.delay), () {
+      Future.delayed(Duration(milliseconds: widget.delay??1), () {
         _animController.forward();
       });
     }
@@ -657,7 +660,7 @@ enum DateType {
 }
 
 class ResultDate {
-   DateTime fromDate;
-   DateTime toDate;
-   String info;
+   DateTime? fromDate;
+   DateTime? toDate;
+   String? info;
 }
