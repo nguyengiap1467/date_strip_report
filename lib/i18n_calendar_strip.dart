@@ -738,7 +738,11 @@ final _i18nModel = {
     'halfYear':['Nửa đầu năm','Nửa cuối năm'],
     'day': ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
     'am': 'SA',
-    'pm': 'CH'
+    'pm': 'CH',
+    'monthly': 'Tháng',
+    'quarterly': 'Quý',
+    'halfYearly': 'Nửa năm',
+    'yearly': 'Năm'
   },
   'hy': {
 //Armenian
