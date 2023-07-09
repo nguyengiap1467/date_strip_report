@@ -734,6 +734,8 @@ final _i18nModel = {
       'Tháng 11',
       'Tháng 12'
     ],
+    'quarter':['Quý 1','Quý 2','Quý 3','Quý 4'],
+    'halfYear':['Nửa đầu năm','Nửa cuối năm'],
     'day': ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
     'am': 'SA',
     'pm': 'CH'
