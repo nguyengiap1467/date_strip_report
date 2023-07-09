@@ -482,13 +482,13 @@ class DateStripReportState extends State<DateStripReport>
   Widget getRoundButton(DateType dateType, bool isSelected){
     String txt = '';
     if (DateType.month == dateType) {
-      txt = _localeMonth();
+      txt = _localeMonthly();
     } else if (DateType.quarter == dateType) {
-      txt = _localeQuarter();
+      txt = _localeQuarterly();
     } else if (DateType.half == dateType) {
-      txt = _localeHalfYear();
+      txt = _localeHalfYearly();
     }else if (DateType.year == dateType) {
-      txt = _localeYear();
+      txt = _localeYearly();
     }
     return Expanded(
       child:
