@@ -4,7 +4,7 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the package uses
 [Semantic Versioning](https://semver.org/).
 
-## 2.0.0 — unreleased
+## 2.0.0 — 2026-11-18
 
 A modernization release: Dart 3, no third-party dependencies, crash fixes,
 a defined date-range contract, theming and accessibility. See
