@@ -5,9 +5,12 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
+migrate_working_dir/
 
 # IntelliJ related
 *.iml
@@ -21,6 +24,9 @@
 #.vscode/
 
 # Flutter/Dart/Pub related
+# Library packages should not commit pubspec.lock; the example app's lock file
+# is ignored too so CI always resolves against the Flutter version under test.
+pubspec.lock
 **/doc/api/
 .dart_tool/
 .flutter-plugins
@@ -29,15 +35,20 @@
 .pub-cache/
 .pub/
 build/
+coverage/
 
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
+**/android/.kotlin/
 **/android/captures/
 **/android/gradlew
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
+*.jks
+*.keystore
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -56,10 +67,12 @@ build/
 **/ios/**/profile
 **/ios/**/xcuserdata
 **/ios/.generated/
+**/ios/Flutter/.last_build_id
 **/ios/Flutter/App.framework
 **/ios/Flutter/Flutter.framework
 **/ios/Flutter/Flutter.podspec
 **/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
 **/ios/Flutter/app.flx
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_assets/
@@ -67,9 +80,11 @@ build/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
+# Web related
+**/web/**/generated_plugin_registrant.dart
+
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
