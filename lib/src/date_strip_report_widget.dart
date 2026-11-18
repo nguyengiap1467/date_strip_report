@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../i18n_calendar_strip.dart';
 import 'date_period.dart';
@@ -39,11 +40,11 @@ class DateStripReport extends StatefulWidget {
     this.isShowQuarter = true,
     this.isShowHalfYear = true,
     this.isShowYear = true,
-    this.navigationColor = Colors.black,
-    this.navigationDisableColor = Colors.black12,
-    this.selectedColor = Colors.blue,
-    this.unSelectedColor = Colors.white,
-    this.textColor = Colors.black,
+    this.navigationColor,
+    this.navigationDisableColor,
+    this.selectedColor,
+    this.unSelectedColor,
+    this.textColor,
     this.locale = LocaleType.en,
     this.labels,
   });
@@ -91,19 +92,29 @@ class DateStripReport extends StatefulWidget {
   final bool isShowYear;
 
   /// Color of an enabled navigation icon.
-  final Color navigationColor;
+  ///
+  /// Defaults to [ColorScheme.onSurface].
+  final Color? navigationColor;
 
   /// Color of a disabled navigation icon.
-  final Color navigationDisableColor;
+  ///
+  /// Defaults to [ColorScheme.onSurface] at 38% opacity.
+  final Color? navigationDisableColor;
 
   /// Fill of the selected tab, border of every tab and text of unselected tabs.
-  final Color selectedColor;
+  ///
+  /// Defaults to [ColorScheme.primary].
+  final Color? selectedColor;
 
   /// Fill of unselected tabs and text of the selected tab.
-  final Color unSelectedColor;
+  ///
+  /// Defaults to [ColorScheme.surface].
+  final Color? unSelectedColor;
 
   /// Color of the selected period's name.
-  final Color textColor;
+  ///
+  /// Defaults to [ColorScheme.onSurface].
+  final Color? textColor;
 
   /// Built-in language used when [labels] is `null`.
   final LocaleType locale;
@@ -297,50 +308,72 @@ class DateStripReportState extends State<DateStripReport> {
   Widget build(BuildContext context) {
     final error = _configError;
     if (error != null) throw error;
+    final colors = _ResolvedColors.of(context, widget);
+    final rtl = Directionality.of(context) == TextDirection.rtl;
     final tabs = <Widget>[];
     for (final type in _visibleTypes) {
       if (tabs.isNotEmpty) tabs.add(const SizedBox(width: 16));
-      tabs.add(_buildTab(type, type == _type));
+      tabs.add(_buildTab(colors, type, type == _type));
     }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        Row(children: tabs),
-        const SizedBox(height: 16),
-        _buildNavigator(_period, _canGoPrevious, _canGoNext, _step),
-      ],
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
+            _step(rtl ? 1 : -1),
+        const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
+            _step(rtl ? -1 : 1),
+      },
+      child: FocusTraversalGroup(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            Row(children: tabs),
+            const SizedBox(height: 16),
+            _buildNavigator(colors, _period, _canGoPrevious, _canGoNext, _step),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildTab(DateType type, bool isSelected) {
+  Widget _buildTab(_ResolvedColors colors, DateType type, bool isSelected) {
     const radius = BorderRadius.all(Radius.circular(24));
     return Expanded(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: isSelected ? widget.selectedColor : widget.unSelectedColor,
-          borderRadius: radius,
-          border: Border.all(color: widget.selectedColor),
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            splashColor: Colors.white24,
+      child: Semantics(
+        container: true,
+        button: true,
+        selected: isSelected,
+        inMutuallyExclusiveGroup: true,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: isSelected ? colors.selected : colors.unselected,
             borderRadius: radius,
-            onTap: () => _selectType(type),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Text(
-                  _tabTitle(type),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    letterSpacing: 0.27,
-                    color: isSelected
-                        ? widget.unSelectedColor
-                        : widget.selectedColor,
+            border: Border.all(color: colors.selected),
+          ),
+          child: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              borderRadius: radius,
+              onTap: () => _selectType(type),
+              child: ConstrainedBox(
+                // Minimum touch target recommended by Material and Android.
+                constraints:
+                    const BoxConstraints(minHeight: kMinInteractiveDimension),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  child: Center(
+                    child: Text(
+                      _tabTitle(type),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        letterSpacing: 0.27,
+                        color: isSelected ? colors.unselected : colors.selected,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -352,63 +385,83 @@ class DateStripReportState extends State<DateStripReport> {
   }
 
   Widget _buildNavigator(
+    _ResolvedColors colors,
     Period period,
     bool canGoPrevious,
     bool canGoNext,
     void Function(int direction) onStep,
   ) {
+    final labels = _labels;
     final heading = period.type == DateType.year
         ? _tabTitle(DateType.year)
         : '${period.start.year}';
+    final name = _periodName(period);
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20, top: 25),
-            child: _buildArrow(
-              widget.leftIcon ?? const Icon(Icons.arrow_back_ios),
-              canGoPrevious ? () => onStep(-1) : null,
+          ExcludeSemantics(
+            child: Text(
+              heading,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15),
             ),
           ),
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(heading, style: const TextStyle(fontSize: 15)),
-              const SizedBox(height: 5),
-              Text(
-                _periodName(period),
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: widget.textColor,
+              _buildArrow(
+                colors,
+                widget.leftIcon ?? const Icon(Icons.arrow_back_ios),
+                labels.previousPeriod,
+                canGoPrevious ? () => onStep(-1) : null,
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Semantics(
+                  liveRegion: true,
+                  label: '$heading, $name',
+                  child: ExcludeSemantics(
+                    child: Text(
+                      name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: colors.text,
+                      ),
+                    ),
+                  ),
                 ),
               ),
+              const SizedBox(width: 4),
+              _buildArrow(
+                colors,
+                widget.rightIcon ?? const Icon(Icons.arrow_forward_ios),
+                labels.nextPeriod,
+                canGoNext ? () => onStep(1) : null,
+              ),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 25),
-            child: _buildArrow(
-              widget.rightIcon ?? const Icon(Icons.arrow_forward_ios),
-              canGoNext ? () => onStep(1) : null,
-            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildArrow(Icon icon, VoidCallback? onTap) => InkWell(
-        onTap: onTap,
-        child: IconTheme.merge(
-          data: IconThemeData(
-            size: 15,
-            color: onTap != null
-                ? widget.navigationColor
-                : widget.navigationDisableColor,
-          ),
-          child: icon,
-        ),
+  Widget _buildArrow(
+    _ResolvedColors colors,
+    Icon icon,
+    String tooltip,
+    VoidCallback? onPressed,
+  ) =>
+      IconButton(
+        icon: icon,
+        iconSize: 15,
+        tooltip: tooltip,
+        color: colors.navigation,
+        disabledColor: colors.navigationDisabled,
+        onPressed: onPressed,
       );
 
   // ---------------------------------------------------------------------------
@@ -519,16 +572,38 @@ class DateStripReportState extends State<DateStripReport> {
   /// A tab button for [dateType].
   @Deprecated('Will be removed in 3.0.0.')
   Widget getRoundButton(DateType dateType, bool isSelected) =>
-      _buildTab(dateType, isSelected);
+      _buildTab(_ResolvedColors.of(context, widget), dateType, isSelected);
 
   Widget _legacyNavigator(DateType type) {
     final period = Period.containing(_anchor, type);
     final span = monthSpanOf(type);
     return _buildNavigator(
+      _ResolvedColors.of(context, widget),
       period,
       _bounds.overlaps(period.shift(-1)),
       _bounds.overlaps(period.shift(1)),
       (direction) => _moveMonths(direction * span),
     );
   }
+}
+
+/// Widget colors with theme defaults applied.
+class _ResolvedColors {
+  _ResolvedColors.of(BuildContext context, DateStripReport widget)
+      : this._(Theme.of(context).colorScheme, widget);
+
+  _ResolvedColors._(ColorScheme scheme, DateStripReport widget)
+      : selected = widget.selectedColor ?? scheme.primary,
+        unselected = widget.unSelectedColor ?? scheme.surface,
+        text = widget.textColor ?? scheme.onSurface,
+        navigation = widget.navigationColor ?? scheme.onSurface,
+        // 0x61 = 38% opacity, Material's disabled emphasis.
+        navigationDisabled =
+            widget.navigationDisableColor ?? scheme.onSurface.withAlpha(0x61);
+
+  final Color selected;
+  final Color unselected;
+  final Color text;
+  final Color navigation;
+  final Color navigationDisabled;
 }
