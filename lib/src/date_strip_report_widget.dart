@@ -364,14 +364,21 @@ class DateStripReportState extends State<DateStripReport> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Center(
-                    child: Text(
-                      _tabTitle(type),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                        letterSpacing: 0.27,
-                        color: isSelected ? colors.unselected : colors.selected,
+                    // Keep the title on one line and shrink it when the tab
+                    // is too narrow, instead of breaking inside a word.
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        _tabTitle(type),
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          letterSpacing: 0.27,
+                          color:
+                              isSelected ? colors.unselected : colors.selected,
+                        ),
                       ),
                     ),
                   ),

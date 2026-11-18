@@ -156,6 +156,20 @@ void main() {
       );
       expect(tester.takeException(), isNull);
     });
+    testWidgets('tab titles shrink instead of breaking inside a word',
+        (tester) async {
+      tester.view.physicalSize = const Size(300 * 3, 640 * 3);
+      tester.view.devicePixelRatio = 3;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(app(const DateStripReport()));
+
+      double lineHeight(String label) =>
+          tester.renderObject<RenderBox>(find.text(label)).size.height;
+      // "Quarterly" is the longest word; it must stay on one line.
+      expect(lineHeight('Quarterly'), lineHeight('Yearly'));
+      expect(lineHeight('Half Year'), lineHeight('Yearly'));
+      expect(tester.takeException(), isNull);
+    });
   });
 
   group('keyboard', () {
