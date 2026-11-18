@@ -1,4 +1,0 @@
-#Thu Dec 22 09:55:32 ICT 2022
-base.0=/Users/nguyengiap/iprojects/date_strip_report/example/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex

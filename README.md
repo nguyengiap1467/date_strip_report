@@ -1,153 +1,315 @@
-<h1 align="center"> Flutter DateTime Strip Report</h1>
-<div align="center">
-  <strong> Easy to use and beautiful datetime strip control for Flutter.</strong>
-</div>
-<div align="center">
+# date_strip_report
 
-### If this project has helped you out, please support us with a star. :star2:
+A report-period selector for Flutter. Users switch between **month, quarter,
+half-year and year**, step through periods with previous/next buttons, and
+your app receives the selected period as an inclusive `fromDate`–`toDate`
+range — optionally limited to a date range.
 
-</div>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/nguyengiap1467/date_strip_report/master/images/v2_monthly_light.png" width="220" alt="Monthly view, light theme">
+  <img src="https://raw.githubusercontent.com/nguyengiap1467/date_strip_report/master/images/v2_quarter_range.png" width="220" alt="Quarter clamped to a date range">
+  <img src="https://raw.githubusercontent.com/nguyengiap1467/date_strip_report/master/images/v2_half_vi_dark.png" width="220" alt="Vietnamese labels, dark theme">
+  <img src="https://raw.githubusercontent.com/nguyengiap1467/date_strip_report/master/images/v2_year_classic.png" width="220" alt="Yearly view with the classic 1.x colors">
+</p>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/nguyengiap1467/DateStripReport/master/images/screen01.png" height="500" width="300"/>
-  <img src="https://raw.githubusercontent.com/nguyengiap1467/DateStripReport/master/images/screen02.png" height="500" width="300"/>
-  <img src="https://raw.githubusercontent.com/nguyengiap1467/DateStripReport/master/images/screen03.png" height="500" width="300"/>
-  <img src="https://raw.githubusercontent.com/nguyengiap1467/DateStripReport/master/images/screen04.png" height="500" width="300"/>
-</div>
+## Features
 
-## Install
+- Month, quarter, half-year and year tabs; hide the ones you don't need.
+- Optional date range with a precise contract: partially overlapping periods
+  are selectable and their dates are clamped, so results never leave the
+  range.
+- Built-in month names for 29 languages; period labels in English,
+  Vietnamese, Chinese, Japanese and Korean; custom labels for anything else.
+- Follows your app's `ThemeData` (light and dark), or takes explicit colors.
+- Accessible: 48 dp touch targets, screen-reader labels and announcements,
+  keyboard navigation, right-to-left support.
+- Pure Dart and Flutter — no third-party dependencies, no platform code.
 
-```text
+## Platform support
+
+The package contains no platform-specific code.
+
+| Platform | Verified for 2.0.0 |
+| --- | --- |
+| Android | Example app builds (debug APK); not yet run on a device or emulator |
+| iOS | Example app builds; integration tests pass on the iOS 26.5 simulator |
+| Web | Example app builds and runs in Chrome; the test suite passes in Chrome |
+| macOS, Windows, Linux | Expected to work (pure Flutter); not built or tested |
+
+The widget works inside `MaterialApp`, `CupertinoApp` or any `WidgetsApp`
+with a navigator. Its tooltips need an `Overlay` ancestor, which all of these
+provide.
+
+## Installation
+
+```sh
+flutter pub add date_strip_report
+```
+
+or add it to `pubspec.yaml`:
+
+```yaml
 dependencies:
-          ...
-          date_strip_report: ^1.0.0
+  date_strip_report: ^2.0.0
 ```
 
-## Usage Example
-
-```dart
-
-    Container(
-        child: DateStripReport(
-          onDateSelected: onSelect,
-          isShowMonth: true,
-          isShowHalfYear: true,
-          isShowQuarter: true,
-          isShowYear: true,
-          startDate: new DateTime(2020,1,1),
-          endDate: new DateTime(2021,1,1),
-          selectedColor: Colors.green,
-          unSelectedColor: Colors.white,
-          locale: LocaleType.en,
-        )
-      )
-
-```
-
-## Full Example
-
-<details>
+## Usage
 
 ```dart
 import 'package:date_strip_report/date_strip_report.dart';
-import 'package:date_strip_report/i18n_calendar_strip.dart';
-import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-            primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    onSelect(data) {
-      print("Selected Date -> $data");
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: DateStripReport(
-          startDate: new DateTime(2020,1,1),
-          endDate: new DateTime(2021,1,1),
-          isShowMonth: true,
-          isShowHalfYear: true,
-          isShowQuarter: true,
-          isShowYear: true,
-          textColor: Colors.green,
-          leftIcon: Icon(Icons.arrow_back_ios),
-          rightIcon: Icon(Icons.arrow_forward_ios),
-          selectedColor: Colors.green,
-          unSelectedColor: Colors.white,
-          locale: LocaleType.en,
-          onDateSelected: onSelect,
-        )
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
+DateStripReport(
+  onDateSelected: (ResultDate result) {
+    // e.g. 2026-11-01 .. 2026-11-30, "November"
+    loadReport(from: result.fromDate, to: result.toDate);
+  },
+)
 ```
 
-</details>
+`onDateSelected` is called once after the first frame with the initial
+selection, then on every user change.
 
-## Widget Properties
+### Limit the selectable range
 
-### Initial data and onDateSelected handler
+```dart
+DateStripReport(
+  startDate: DateTime(2024, 3, 15), // first selectable day (inclusive)
+  endDate: DateTime(2026, 10, 20),  // first day NOT selectable (exclusive)
+  initialDateType: DateType.quarter,
+  onDateSelected: print,
+)
+```
 
-| Prop                      | Description                                                                                          | Type             | Default              |
-| ------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------- | -------------------- |
-| **`startDate`**           | Date to be used for setting starting date in a date range.                                           | `DateTime`       | -                    |
-| **`endDate`**             | Date to be used for setting ending date in a date range.                                             | `DateTime`       | -                    |
-| **`isShowMonth`**        | Show or Hide DateTime type month.                          | `bool`       | true                    |
-| **`isShowHalfYear`**         | Show or Hide DateTime type half year | `bool` | true                    |
-| **`isShowQuarter`**           | Show or Hide DateTime type quarter                                                    | `bool`          | true |
-| **`isShowYear`**     |  Show or Hide DateTime type year                                                                     | `bool`            | true            |
-| **`textColor`** | Color of text info control.                                 | `Color`  | -                    |
-| **`rightIcon`**     | Icon for next navigation                    | `Icon`       | `Icon(Icons.arrow_back_ios)`                   |
-| **`leftIcon`**     | Icon for previous navigation                    | `Icon`       | `Icon(Icons.arrow_forward_ios)`                    |
-| **`selectedColor`** | Color of button round selected.                                 | `Color`  | `Colors.blue`                    |
-| **`unSelectedColor`**     | Color of button round unselected.                   | `Color`       | `Colors.white`                    |
-| **`navigationColor`**     | Color of navigation icon                    | `Color`       | `Colors.black`                   |
-| **`navigationDisableColor`**     | Color of navigation icon is disable                    | `Color`       | `Colors.black12`                    |
-| **`locale`**     | localization of language             | `LocaleType`       | `LocaleType.en`                    |
-| **`onDateSelected`**      | Function that is called on selection of a date. (Required)                                           | `Function`       | **`Required`**       |
+### Pick the visible tabs and the starting period
 
+```dart
+DateStripReport(
+  isShowMonth: false,
+  isShowHalfYear: false,
+  initialDate: DateTime(2025, 7, 1),
+  initialDateType: DateType.year,
+  onDateSelected: print,
+)
+```
 
+### Languages and custom labels
 
+```dart
+// Built-in language
+DateStripReport(locale: LocaleType.vi, onDateSelected: print)
 
-## Donation
-If this project help you reduce time to develop, you can give me a cup of coffee :) 
+// Your own strings, starting from a built-in set
+DateStripReport(
+  labels: DateStripLabels.forLocale(LocaleType.fr).copyWith(
+    monthly: 'Mensuel',
+    quarterly: 'Trimestriel',
+    halfYearly: 'Semestriel',
+    yearly: 'Annuel',
+    quarters: ['T1', 'T2', 'T3', 'T4'],
+    halves: ['S1', 'S2'],
+    previousPeriod: 'Période précédente',
+    nextPeriod: 'Période suivante',
+  ),
+  onDateSelected: print,
+)
+```
 
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/nguyengiap/5)
+### Colors
+
+By default the widget uses your theme's `ColorScheme` (`primary`, `surface`,
+`onSurface`). Pass colors to override it — this reproduces the 1.x look:
+
+```dart
+DateStripReport(
+  selectedColor: Colors.green,
+  unSelectedColor: Colors.white,
+  textColor: Colors.green,
+  navigationColor: Colors.black,
+  navigationDisableColor: Colors.black12,
+  onDateSelected: print,
+)
+```
+
+A complete demo is in [`example/`](example/).
+
+## Date-range behavior
+
+- `startDate` is **inclusive**, `endDate` is **exclusive**, times of day are
+  ignored, and either may be omitted. `startDate` must be before `endDate`.
+- A period is selectable when **at least one of its days** is in the range.
+  Its reported `fromDate`/`toDate` are clamped to the range and
+  `isPartial` is `true`. The tab still shows the full period name
+  (e.g. "Quarter 4").
+- Previous/next are disabled when the adjacent period has no selectable day.
+- `initialDate` (default: today) is moved to the nearest selectable day.
+  Switching tabs returns to the period containing `initialDate`.
+- Changing `startDate`, `endDate`, `locale`, `labels` or the visible tabs at
+  runtime is applied immediately; if the result changes, `onDateSelected` is
+  called again after the frame.
+
+Example with `startDate: 2024-03-15`, `endDate: 2024-10-20`:
+
+| Selected period | `fromDate` | `toDate` | `isPartial` |
+| --- | --- | --- | --- |
+| March 2024 | 2024-03-15 | 2024-03-31 | true |
+| Quarter 2 2024 | 2024-04-01 | 2024-06-30 | false |
+| Quarter 4 2024 | 2024-10-01 | 2024-10-19 | true |
+| Year 2024 | 2024-03-15 | 2024-10-19 | true |
+| February 2024 / Quarter 1 2025 | not selectable | | |
+
+`toDate` is the last day at midnight. To filter timestamps, use
+`ts >= fromDate && ts < toDateExclusive`.
+
+## Accessibility and keyboard
+
+- Tabs expose button, selected and mutually-exclusive-group semantics.
+- Previous/next buttons have tooltips (`DateStripLabels.previousPeriod` /
+  `nextPeriod`) and a disabled state.
+- The selected period (e.g. "2026, November") is a live region, so screen
+  readers announce changes.
+- **Tab** moves focus, **Enter**/**Space** activates, and **←/→** step to the
+  previous/next period while focus is inside the widget (mirrored in RTL).
+- Tests check Flutter's tap-target, labeled-tap-target and text-contrast
+  guidelines in light and dark themes.
+
+## API reference
+
+### `DateStripReport`
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onDateSelected` | `ValueChanged<ResultDate>?` | `null` | Called with the selected period. |
+| `startDate` | `DateTime?` | `null` | First selectable day (inclusive). |
+| `endDate` | `DateTime?` | `null` | First non-selectable day (exclusive). |
+| `initialDate` | `DateTime?` | today | Day whose period is selected first. |
+| `initialDateType` | `DateType?` | first visible tab | Tab selected first. |
+| `isShowMonth` / `isShowQuarter` / `isShowHalfYear` / `isShowYear` | `bool` | `true` | Tab visibility; at least one must be `true`. |
+| `locale` | `LocaleType` | `LocaleType.en` | Built-in strings. |
+| `labels` | `DateStripLabels?` | `null` | Custom strings; overrides `locale`. |
+| `leftIcon` / `rightIcon` | `Icon?` | `arrow_back_ios` / `arrow_forward_ios` | Navigation icons (15 px unless the icon sets a size). |
+| `selectedColor` | `Color?` | `colorScheme.primary` | Selected tab fill, tab borders, unselected tab text. |
+| `unSelectedColor` | `Color?` | `colorScheme.surface` | Unselected tab fill, selected tab text. |
+| `textColor` | `Color?` | `colorScheme.onSurface` | Period name. |
+| `navigationColor` | `Color?` | `colorScheme.onSurface` | Enabled arrows. |
+| `navigationDisableColor` | `Color?` | `onSurface` at 38 % | Disabled arrows. |
+
+`DateStripReportState.selectedResult` returns the current selection (use a
+`GlobalKey<DateStripReportState>`).
+
+### `ResultDate`
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `fromDate` | `DateTime` | First day (inclusive, local midnight). |
+| `toDate` | `DateTime` | Last day (inclusive, local midnight). |
+| `toDateExclusive` | `DateTime` | Day after `toDate`. |
+| `info` | `String` | Localized period name, e.g. "November", "Quarter 4", "2026". |
+| `dateType` | `DateType` | `month`, `quarter`, `half` or `year`. |
+| `isPartial` | `bool` | `true` when dates were clamped to the range. |
+
+### `DateStripLabels`
+
+Tab titles (`monthly`, `quarterly`, `halfYearly`, `yearly`), period names
+(`months` ×12, `quarters` ×4, `halves` ×2), `yearPattern` (e.g. `'{year}年'`)
+and button labels (`previousPeriod`, `nextPeriod`). Lists of the wrong length
+fall back to English. Use `DateStripLabels.forLocale(locale)` and `copyWith`.
+
+Full API documentation is generated by `dart doc` and published on pub.dev.
+
+## Compatibility
+
+| | Supported |
+| --- | --- |
+| Dart | 3.4 or newer |
+| Flutter | 3.22 or newer |
+| Verified locally | Flutter 3.29.0 / Dart 3.7.0 on macOS |
+| CI | Flutter 3.22.x, 3.29.0 and latest stable ([workflow](.github/workflows/ci.yml)) |
+
+## Migrating from 1.x
+
+Most apps only need to bump the version. Check these points:
+
+1. **Callback type.** `onDateSelected` is `ValueChanged<ResultDate>?`.
+   `(data) { … }` and `(ResultDate r) { … }` keep working; callbacks declaring
+   another parameter type must change.
+2. **`ResultDate` fields are non-null.** Remove `!` / `?.` (they only cause
+   warnings). Code that created `ResultDate()` or assigned its fields must
+   use the new constructor.
+3. **First callback timing.** It now arrives after the first frame. Don't
+   rely on it having run before your own `build`.
+4. **Colors.** Defaults now come from the theme. To keep the 1.x look pass
+   `selectedColor: Colors.blue, unSelectedColor: Colors.white,
+   textColor: Colors.black, navigationColor: Colors.black,
+   navigationDisableColor: Colors.black12`.
+5. **Label text.** If you compare `ResultDate.info` strings, note the new
+   English quarter/half names and the corrected CJK labels. Prefer
+   `dateType` and the dates for logic.
+6. **Ranges.** Results are clamped to the range and a range excluding today
+   no longer throws. An empty or inverted range throws `ArgumentError`.
+7. **Deprecated members** (`SlideFadeTransition`, `DateUtils`,
+   `DateStripReportState.getNextMonth`, …) still work and will be removed in
+   3.0.0.
+
+## Screenshots and demo recording
+
+The screenshots above are rendered from the example app:
+
+```sh
+cd example
+flutter test screenshots/screenshots_test.dart --update-goldens
+```
+
+They are written to `images/`. To record a GIF, run the example
+(`flutter run -d chrome` or on a device), record the screen with your OS tool
+(macOS: <kbd>Shift</kbd>+<kbd>⌘</kbd>+<kbd>5</kbd>; Android: `adb shell
+screenrecord demo.mp4`), and convert it, e.g.
+`ffmpeg -i demo.mp4 -vf "fps=12,scale=360:-1" demo.gif`.
+
+## Known limitations
+
+- Periods are calendar-based: quarters start in January, April, July and
+  October, years in January. Fiscal years are not supported.
+- Period labels are built in for English, Vietnamese, Chinese, Japanese and
+  Korean only. Other locales show their month names with English period
+  labels unless you pass `labels`. The Chinese, Japanese and Korean labels
+  have not yet been reviewed by native speakers.
+- The widget does not read `Localizations`/`Locale` from the app; choose the
+  language with `locale` or `labels`.
+- Dates are local calendar dates at midnight; UTC inputs are interpreted by
+  their year/month/day fields.
+- `initialDate` and `initialDateType` are only read when the widget is first
+  created (like an initial value).
+- For years after 2037 the Dart runtime only approximates local time-zone
+  offsets; in zones that changed their UTC offset (e.g. `Pacific/Apia`) such
+  dates can be shifted by a day. Calendar days skipped by a time zone (e.g.
+  `Pacific/Kiritimati`, 1994-12-31) are handled.
+- There is no controller for programmatic navigation yet.
+- `LocaleType.jp` and `LocaleType.cat` are not ISO 639-1 codes (`ja`, `ca`);
+  they are kept for compatibility.
+
+## Contributing
+
+Issues and pull requests are welcome. Before opening a PR, run:
+
+```sh
+dart format lib test example/lib example/test
+flutter analyze
+flutter test
+flutter test --platform chrome
+(cd example && flutter test)
+# On a device, simulator or emulator:
+(cd example && flutter test integration_test/app_test.dart -d <device id>)
+```
+
+## License
+
+MIT — see [LICENSE](LICENSE). Parts of the code are derived from
+[calendar_strip](https://github.com/IronLad85/flutter_calendar_strip)
+(BSD-3-Clause) and
+[flutter_datetime_picker](https://github.com/Realank/flutter_datetime_picker)
+(MIT); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Support
+
+If this package saves you time, you can
+[buy me a coffee](https://www.paypal.me/nguyengiap/5).
