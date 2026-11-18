@@ -521,7 +521,8 @@ class DateStripReportState extends State<DateStripReport> {
 
   /// [normalValue], or [defaultValue] when it is `null`.
   @Deprecated('Use the ?? operator; will be removed in 3.0.0.')
-  Object? nullOrDefault(Object? normalValue, Object? defaultValue) =>
+  // Kept `dynamic` (as in 1.x) so `String s = nullOrDefault(a, b)` compiles.
+  dynamic nullOrDefault(dynamic normalValue, dynamic defaultValue) =>
       normalValue ?? defaultValue;
 
   /// Reports the current selection to `onDateSelected` again.
