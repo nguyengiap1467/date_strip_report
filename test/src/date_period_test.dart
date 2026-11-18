@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:date_strip_report/src/date_period.dart';
 import 'package:date_strip_report/src/result_date.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -245,5 +247,71 @@ void main() {
         'ResultDate(month: 2024-12-01..2024-12-31, "December")',
       );
     });
+  });
+
+  test('invariants hold for 20,000 random dates, ranges and steps', () {
+    final random = Random(42);
+    // Years after 2037 are avoided: there the Dart VM approximates local
+    // time-zone offsets, which is visibly wrong in zones such as Pacific/Apia
+    // that changed their UTC offset (DateTime(2065, 1) -> 2065-01-02 01:00).
+    DateTime randomDay() => DateTime(
+          1990 + random.nextInt(48),
+          1 + random.nextInt(12),
+          1 + random.nextInt(31), // day overflow is normalized on purpose
+        );
+    int days(DateTime d) => DateTime.utc(d.year, d.month, d.day)
+        .difference(DateTime.utc(1970))
+        .inDays;
+    for (var i = 0; i < 20000; i++) {
+      final type = DateType.values[random.nextInt(4)];
+      final p = Period.containing(randomDay(), type);
+      final span = monthSpanOf(type);
+      final steps = random.nextInt(41) - 20;
+
+      // Shape of a period.
+      expect(p.start.day, 1);
+      expect((p.start.month - 1) % span, 0);
+      // lastDay is the last existing day before endExclusive (normally the
+      // day before; two days before where a time zone skipped a day).
+      expect(p.lastDay.isBefore(p.endExclusive), isTrue);
+      final following = DateTime(
+        p.lastDay.year,
+        p.lastDay.month,
+        p.lastDay.day + 1,
+      );
+      expect(following.isBefore(p.endExclusive), isFalse);
+      expect(Period.containing(p.lastDay, type), p);
+      expect(Period.containing(p.start, type), p);
+      expect(p.shift(steps).shift(-steps), p);
+      expect(days(p.shift(1).start), days(p.endExclusive));
+
+      // Clamping against a random, possibly one-sided, range.
+      final a = randomDay();
+      final b = DateTime(a.year, a.month, a.day + 1 + random.nextInt(1500));
+      final bounds = DateBounds(
+        random.nextInt(5) == 0 ? null : a,
+        random.nextInt(5) == 0 ? null : b,
+      );
+      if (!bounds.overlaps(p)) {
+        final first = bounds.first;
+        final last = bounds.last;
+        expect(
+          (first != null && days(p.lastDay) < days(first)) ||
+              (last != null && days(p.start) > days(last)),
+          isTrue,
+          reason: '$p is reported as outside $a..$b',
+        );
+        continue;
+      }
+      final from = bounds.clampedStart(p);
+      final to = bounds.clampedLastDay(p);
+      expect(days(from) <= days(to), isTrue);
+      expect(bounds.contains(from) && bounds.contains(to), isTrue);
+      expect(
+        days(from) >= days(p.start) && days(to) <= days(p.lastDay),
+        isTrue,
+      );
+      expect(Period.containing(bounds.clamp(p.start), type), p);
+    }
   });
 }

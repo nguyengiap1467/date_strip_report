@@ -13,6 +13,21 @@ import 'result_date.dart';
 /// Strips the time of day from [date], keeping its calendar date.
 DateTime dateOnly(DateTime date) => DateTime(date.year, date.month, date.day);
 
+/// The last calendar day before [end] (a local midnight).
+///
+/// Normally `DateTime(y, m, d - 1)`. A few time zones skipped a whole calendar
+/// day (Pacific/Kiritimati: 1994-12-31, Pacific/Apia: 2011-12-30); DateTime
+/// then rolls the missing day forward onto [end], so step back further.
+DateTime dayBefore(DateTime end) {
+  var back = 1;
+  var day = DateTime(end.year, end.month, end.day - back);
+  while (!day.isBefore(end)) {
+    back++;
+    day = DateTime(end.year, end.month, end.day - back);
+  }
+  return day;
+}
+
 /// Number of months covered by one period of [type].
 int monthSpanOf(DateType type) => switch (type) {
       DateType.month => 1,
@@ -42,7 +57,7 @@ class Period {
   int get _span => monthSpanOf(type);
 
   /// Last day of the period (inclusive).
-  DateTime get lastDay => DateTime(start.year, start.month + _span, 0);
+  DateTime get lastDay => dayBefore(endExclusive);
 
   /// First day after the period.
   DateTime get endExclusive => DateTime(start.year, start.month + _span);
@@ -103,7 +118,7 @@ class DateBounds {
   /// Last selectable date, or `null` for no upper bound.
   DateTime? get last {
     final end = endExclusive;
-    return end == null ? null : DateTime(end.year, end.month, end.day - 1);
+    return end == null ? null : dayBefore(end);
   }
 
   /// Whether the calendar date of [date] is selectable.
