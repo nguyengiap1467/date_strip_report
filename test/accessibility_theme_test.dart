@@ -1,4 +1,5 @@
 import 'package:date_strip_report/date_strip_report.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,9 +29,16 @@ Color? tabFill(WidgetTester tester, String label) {
   return (box.decoration as BoxDecoration).color;
 }
 
+// textContrastGuideline screenshots the scene; on the web test engine of
+// Flutter 3.29 that fails inside CanvasKit ("This image has been disposed")
+// even for a bare Text widget, so the contrast checks run on the VM only.
+const String? _contrastSkip = kIsWeb
+    ? 'textContrastGuideline is not supported by the web test engine'
+    : null;
+
 void main() {
   group('accessibility', () {
-    testWidgets('meets Flutter tap-target, label and contrast guidelines',
+    testWidgets('meets Flutter tap-target and label guidelines',
         (tester) async {
       final handle = tester.ensureSemantics();
       await tester.pumpWidget(
@@ -40,9 +48,26 @@ void main() {
       await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
       await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));
       await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
-      await expectLater(tester, meetsGuideline(textContrastGuideline));
       handle.dispose();
     });
+
+    for (final brightness in Brightness.values) {
+      testWidgets(
+        'meets the text contrast guideline (${brightness.name} theme)',
+        skip: _contrastSkip != null,
+        (tester) async {
+          final handle = tester.ensureSemantics();
+          await tester.pumpWidget(
+            app(
+              DateStripReport(initialDate: DateTime(2026, 11, 18)),
+              theme: ThemeData(brightness: brightness),
+            ),
+          );
+          await expectLater(tester, meetsGuideline(textContrastGuideline));
+          handle.dispose();
+        },
+      );
+    }
 
     testWidgets('tabs are buttons in a mutually exclusive group',
         (tester) async {
@@ -202,6 +227,24 @@ void main() {
       expect(results.last.info, 'Quarter 3');
     });
 
+    testWidgets('Space activates the focused tab', (tester) async {
+      final results = <ResultDate>[];
+      await tester.pumpWidget(
+        app(
+          DateStripReport(
+            initialDate: DateTime(2026, 11, 18),
+            onDateSelected: results.add,
+          ),
+        ),
+      );
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab); // Monthly
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab); // Quarterly
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab); // Half Year
+      await tester.sendKeyEvent(LogicalKeyboardKey.space);
+      await tester.pumpAndSettle();
+      expect(results.last.info, 'Second half');
+    });
+
     testWidgets('arrow keys respect range limits', (tester) async {
       final results = <ResultDate>[];
       await tester.pumpWidget(
@@ -263,7 +306,6 @@ void main() {
 
     testWidgets('dark theme', (tester) async {
       final theme = ThemeData(brightness: Brightness.dark);
-      final handle = tester.ensureSemantics();
       await tester.pumpWidget(
         app(DateStripReport(initialDate: DateTime(2026, 11, 18)), theme: theme),
       );
@@ -272,8 +314,7 @@ void main() {
         tester.widget<Text>(find.text('November')).style?.color,
         theme.colorScheme.onSurface,
       );
-      await expectLater(tester, meetsGuideline(textContrastGuideline));
-      handle.dispose();
+      expect(tabFill(tester, 'Monthly'), theme.colorScheme.primary);
     });
 
     testWidgets('explicit colors still win (1.x look)', (tester) async {

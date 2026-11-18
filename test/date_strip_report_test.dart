@@ -673,6 +673,7 @@ void main() {
       expect(s.getDateOnly(a), DateTime(2024, 5, 1));
       // ignore: deprecated_member_use_from_same_package
       expect(s.nullOrDefault(null, 3), 3);
+
       expect(
         // ignore: deprecated_member_use_from_same_package
         () => s.runPresetsAndExceptions(
