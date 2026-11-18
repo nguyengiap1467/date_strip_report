@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Flutter ${{ matrix.label }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Lowest version allowed by pubspec.yaml (Dart 3.4).
+          - label: 3.22 minimum
+            flutter-version: 3.22.x
+            strict: false
+          # Version the 2.0.0 release was developed and verified with.
+          - label: 3.29.0 reference
+            flutter-version: 3.29.0
+            strict: true
+          # Newest stable release, to catch upcoming deprecations early.
+          - label: latest stable
+            flutter-version: ""
+            strict: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ matrix.flutter-version }}
+          cache: true
+
+      - run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        if: matrix.strict
+        run: dart format --output=none --set-exit-if-changed lib test example/lib example/test
+
+      - name: Analyze (infos are fatal)
+        if: matrix.strict
+        run: flutter analyze
+
+      # Lint sets differ between flutter_lints 4 and 5, and newer SDKs add
+      # deprecations, so only warnings and errors fail these jobs.
+      - name: Analyze (warnings and errors are fatal)
+        if: ${{ !matrix.strict }}
+        run: flutter analyze --no-fatal-infos
+
+      - name: Test package
+        run: flutter test --coverage
+
+      - name: Test example
+        working-directory: example
+        run: flutter test
+
+      - name: Validate package for pub.dev
+        if: matrix.strict
+        run: flutter pub publish --dry-run
+
+  build-example:
+    name: Build example (${{ matrix.target }})
+    needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: web
+            os: ubuntu-latest
+            command: flutter build web
+          - target: android
+            os: ubuntu-latest
+            command: flutter build apk --debug
+          - target: ios
+            os: macos-latest
+            command: flutter build ios --debug --no-codesign
+    defaults:
+      run:
+        working-directory: example
+    steps:
+      - uses: actions/checkout@v4
+
+      - if: matrix.target == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.0
+          cache: true
+
+      - run: flutter pub get
+
+      - run: ${{ matrix.command }}
