@@ -1,16 +1,27 @@
-# example
+# date_strip_report example
 
-A new Flutter application.
+A demo of every `DateStripReport` feature:
 
-## Getting Started
+- month / quarter / half-year / year tabs, each of which can be hidden;
+- an optional date range, showing how partially overlapping periods are
+  clamped (`ResultDate.isPartial`);
+- built-in languages (English, Vietnamese, Chinese, Japanese, Korean) and the
+  English fallback for other locales;
+- custom labels with `DateStripLabels` (a French example);
+- theme-derived colors in light and dark mode, or the explicit 1.x colors;
+- the `ResultDate` reported through `onDateSelected`.
 
-This project is a starting point for a Flutter application.
+## Run
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+cd example
+flutter pub get
+flutter run            # pick an Android/iOS device or simulator
+flutter run -d chrome  # web
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Test
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+flutter test
+```
