@@ -3,36 +3,99 @@
 // Copyright (c) 2018 Liu Yanbo. Licensed under the MIT License.
 // See THIRD_PARTY_NOTICES.md for the full license text.
 
+/// Languages with built-in strings.
+///
+/// Every locale provides month names. Period labels (tab titles, quarter and
+/// half-year names, navigation tooltips) are translated for [en], [vi], [zh],
+/// [jp] and [ko]; other locales fall back to English for those labels. Supply
+/// a `DateStripLabels` to `DateStripReport.labels` to translate them.
 enum LocaleType {
+  /// English
   en,
+
+  /// Persian (Farsi)
   fa,
+
+  /// Chinese (Simplified)
   zh,
+
+  /// Dutch
   nl,
+
+  /// Russian
   ru,
+
+  /// Italian
   it,
+
+  /// French
   fr,
+
+  /// Spanish
   es,
+
+  /// Polish
   pl,
+
+  /// Portuguese
   pt,
+
+  /// Korean
   ko,
+
+  /// Kazakh
   kk,
+
+  /// Arabic
   ar,
+
+  /// Turkish
   tr,
+
+  /// Azerbaijani
   az,
+
+  /// Japanese. Note: the ISO 639-1 code is `ja`.
   jp,
+
+  /// German
   de,
+
+  /// Danish
   da,
+
+  /// Mongolian
   mn,
+
+  /// Bengali
   bn,
+
+  /// Vietnamese
   vi,
+
+  /// Armenian
   hy,
+
+  /// Indonesian
   id,
+
+  /// Bulgarian
   bg,
+
+  /// Basque
   eu,
+
+  /// Catalan. Note: the ISO 639-1 code is `ca`.
   cat,
+
+  /// Thai
   th,
+
+  /// Sinhala
   si,
-  no
+
+  /// Norwegian
+  no,
 }
 
 final _i18nModel = {
@@ -52,7 +115,7 @@ final _i18nModel = {
       'Sep',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
     ],
     'monthLong': [
       'January',
@@ -66,18 +129,21 @@ final _i18nModel = {
       'September',
       'October',
       'November',
-      'December'
+      'December',
     ],
     'day': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-    'quarter':['Quarter 1st','Quarter 2st','Quarter 3st','Quarter 4st'],
-    'halfYear':['Half year 1st','Half year 2st'],
-    'year':'Year',
+    'quarter': ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+    'halfYear': ['First half', 'Second half'],
+    'year': 'Year',
     'am': 'AM',
     'pm': 'PM',
-    'monthly':'Monthly',
-    'quarterly':'Quarterly',
-    'halfYearly':'Half Year',
-    'yearly':'Yearly'
+    'monthly': 'Monthly',
+    'quarterly': 'Quarterly',
+    'halfYearly': 'Half Year',
+    'yearly': 'Yearly',
+    'yearPattern': '{year}',
+    'previousPeriod': 'Previous period',
+    'nextPeriod': 'Next period',
   },
   'mn': {
     'cancel': 'Гарах',
@@ -95,7 +161,7 @@ final _i18nModel = {
       '9-р сар',
       '10-р сар',
       '11-р сар',
-      '12-р сар'
+      '12-р сар',
     ],
     'monthLong': [
       '1-р сарын ',
@@ -109,11 +175,11 @@ final _i18nModel = {
       '9-р сарын ',
       '10-р сарын ',
       '11-р сарын ',
-      '12-р сарын '
+      '12-р сарын ',
     ],
     'day': ['Дав', 'Мяг', 'Лха', 'Пүр', 'Баа', 'Бям', 'Ням'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'fa': {
     'cancel': 'لغو',
@@ -131,7 +197,7 @@ final _i18nModel = {
       'آذر',
       'دی',
       'بهمن',
-      'اسفند'
+      'اسفند',
     ],
     'monthLong': [
       'فروردین',
@@ -145,22 +211,80 @@ final _i18nModel = {
       'آذر',
       'دی',
       'بهمن',
-      'اسفند'
+      'اسفند',
     ],
-    'day': ['دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنج شنبه', 'جمعه', 'شنبه', 'یکشنبه'],
+    'day': [
+      'دوشنبه',
+      'سه شنبه',
+      'چهارشنبه',
+      'پنج شنبه',
+      'جمعه',
+      'شنبه',
+      'یکشنبه',
+    ],
     'am': 'صبح',
-    'pm': 'عصر'
+    'pm': 'عصر',
   },
   'zh': {
     //Chinese
     'cancel': '取消',
     'done': '确定',
     'today': '今天',
-    'monthShort': ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    'monthLong': ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    'monthShort': [
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
+    ],
+    'monthLong': [
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
+    ],
     'day': ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
     'am': '上午',
-    'pm': '下午'
+    'pm': '下午',
+    // Period labels used by DateStripReport.
+    'periodMonth': [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ],
+    'quarter': ['第一季度', '第二季度', '第三季度', '第四季度'],
+    'halfYear': ['上半年', '下半年'],
+    'monthly': '月度',
+    'quarterly': '季度',
+    'halfYearly': '半年度',
+    'yearly': '年度',
+    'yearPattern': '{year}年',
+    'previousPeriod': '上一期',
+    'nextPeriod': '下一期',
   },
   'nl': {
     //Dutch
@@ -205,7 +329,7 @@ final _i18nModel = {
       'Zo',
     ],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'ru': {
     'cancel': 'Отмена',
@@ -223,7 +347,7 @@ final _i18nModel = {
       'Сен',
       'Окт',
       'Ноя',
-      'Дек'
+      'Дек',
     ],
     'monthLong': [
       'Январь',
@@ -237,11 +361,11 @@ final _i18nModel = {
       'Сентябрь',
       'Октябрь',
       'Ноябрь',
-      'Декабрь'
+      'Декабрь',
     ],
     'day': ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'it': {
     'cancel': 'Annulla',
@@ -259,7 +383,7 @@ final _i18nModel = {
       'Set',
       'Ott',
       'Nov',
-      'Dic'
+      'Dic',
     ],
     'monthLong': [
       'Gennaio',
@@ -273,11 +397,11 @@ final _i18nModel = {
       'Settembre',
       'Ottobre',
       'Novembre',
-      'Dicembre'
+      'Dicembre',
     ],
     'day': ['Lun', 'Mar', 'Mer', 'Giov', 'Ven', 'Sab', 'Dom'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'fr': {
     'cancel': 'Annuler',
@@ -295,7 +419,7 @@ final _i18nModel = {
       'Sep',
       'Oct',
       'Nov',
-      'Déc'
+      'Déc',
     ],
     'monthLong': [
       'Janvier',
@@ -309,11 +433,11 @@ final _i18nModel = {
       'Septembre',
       'Octobre',
       'Novembre',
-      'Décembre'
+      'Décembre',
     ],
     'day': ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'es': {
     'cancel': 'Cancelar',
@@ -331,7 +455,7 @@ final _i18nModel = {
       'Sep',
       'Oct',
       'Nov',
-      'Dic'
+      'Dic',
     ],
     'monthLong': [
       'Enero',
@@ -345,11 +469,11 @@ final _i18nModel = {
       'Septiembre',
       'Octubre',
       'Noviembre',
-      'Diciembre'
+      'Diciembre',
     ],
     'day': ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'pl': {
     'cancel': 'Anuluj',
@@ -367,7 +491,7 @@ final _i18nModel = {
       'Wrz',
       'Paź',
       'Lis',
-      'Gru'
+      'Gru',
     ],
     'monthLong': [
       'Styczeń',
@@ -381,11 +505,11 @@ final _i18nModel = {
       'Wrzesień',
       'Październik',
       'Listopad',
-      'Grudzień'
+      'Grudzień',
     ],
     'day': ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'pt': {
     'cancel': 'Cancelar',
@@ -403,7 +527,7 @@ final _i18nModel = {
       'Set',
       'Out',
       'Nov',
-      'Dez'
+      'Dez',
     ],
     'monthLong': [
       'Janeiro',
@@ -417,21 +541,57 @@ final _i18nModel = {
       'Setembro',
       'Outubro',
       'Novembro',
-      'Dezembro'
+      'Dezembro',
     ],
     'day': ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'ko': {
     'cancel': '취소',
     'done': '완료',
     'today': '오늘',
-    'monthShort': ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-    'monthLong': ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    'monthShort': [
+      '1월',
+      '2월',
+      '3월',
+      '4월',
+      '5월',
+      '6월',
+      '7월',
+      '8월',
+      '9월',
+      '10월',
+      '11월',
+      '12월',
+    ],
+    'monthLong': [
+      '1월',
+      '2월',
+      '3월',
+      '4월',
+      '5월',
+      '6월',
+      '7월',
+      '8월',
+      '9월',
+      '10월',
+      '11월',
+      '12월',
+    ],
     'day': ['월', '화', '수', '목', '금', '토', '일'],
     'am': '오전',
-    'pm': '오후'
+    'pm': '오후',
+    // Period labels used by DateStripReport.
+    'quarter': ['1분기', '2분기', '3분기', '4분기'],
+    'halfYear': ['상반기', '하반기'],
+    'monthly': '월별',
+    'quarterly': '분기별',
+    'halfYearly': '반기별',
+    'yearly': '연도별',
+    'yearPattern': '{year}년',
+    'previousPeriod': '이전 기간',
+    'nextPeriod': '다음 기간',
   },
   'kk': {
     'cancel': 'Жою',
@@ -449,7 +609,7 @@ final _i18nModel = {
       'Қыр',
       'Қаз',
       'Қар',
-      'Жел'
+      'Жел',
     ],
     'monthLong': [
       'Қаңтар',
@@ -463,11 +623,11 @@ final _i18nModel = {
       'Қыркүйек',
       'Қазан',
       'Қараша',
-      'Желтоқсан'
+      'Желтоқсан',
     ],
     'day': ['Дү', 'Сй', 'Ср', 'Бе', 'Жм', 'Сн', 'Же'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'ar': {
     'cancel': 'إنهاء',
@@ -485,7 +645,7 @@ final _i18nModel = {
       'سبتمبر',
       'أكتوبر',
       'نوفمبر',
-      'ديسمبر'
+      'ديسمبر',
     ],
     'monthLong': [
       'يناير',
@@ -499,11 +659,19 @@ final _i18nModel = {
       'سبتمبر',
       'أكتوبر',
       'نوفمبر',
-      'ديسمبر'
+      'ديسمبر',
     ],
-    'day': ['الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعه', 'السبت', 'الاحد'],
+    'day': [
+      'الإثنين',
+      'الثلاثاء',
+      'الأربعاء',
+      'الخميس',
+      'الجمعه',
+      'السبت',
+      'الاحد',
+    ],
     'am': 'ص',
-    'pm': 'م'
+    'pm': 'م',
   },
   'tr': {
     'cancel': 'İptal',
@@ -521,7 +689,7 @@ final _i18nModel = {
       'Eyl',
       'Eki',
       'Kas',
-      'Ara'
+      'Ara',
     ],
     'monthLong': [
       'Ocak',
@@ -535,11 +703,11 @@ final _i18nModel = {
       'Eylül',
       'Ekim',
       'Kasım',
-      'Aralık'
+      'Aralık',
     ],
     'day': ['Pzt', 'Sal', 'Çarş', 'Perş', 'Cum', 'Ctes', 'Paz'],
     'am': 'ÖÖ',
-    'pm': 'ÖS'
+    'pm': 'ÖS',
   },
   'az': {
     'cancel': 'Ləğv et',
@@ -557,7 +725,7 @@ final _i18nModel = {
       'Sen',
       'Okt',
       'Noy',
-      'Dek'
+      'Dek',
     ],
     'monthLong': [
       'Yanvar',
@@ -571,22 +739,58 @@ final _i18nModel = {
       'Sentyabr',
       'Oktyabr',
       'Noyabr',
-      'Dekabr'
+      'Dekabr',
     ],
     'day': ['B.E', 'Ç.A', 'Ç', 'C.A', 'C.', 'Ş.', 'B.'],
     'am': 'ÖÖ',
-    'pm': 'ÖS'
+    'pm': 'ÖS',
   },
   'jp': {
     //Japanese
     'cancel': 'キャンセル',
     'done': '完了',
     'today': '今日',
-    'monthShort': ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    'monthLong': ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    'monthShort': [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ],
+    'monthLong': [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ],
     'day': ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'],
     'am': '午前',
-    'pm': '午後'
+    'pm': '午後',
+    // Period labels used by DateStripReport.
+    'quarter': ['第1四半期', '第2四半期', '第3四半期', '第4四半期'],
+    'halfYear': ['上半期', '下半期'],
+    'monthly': '月次',
+    'quarterly': '四半期',
+    'halfYearly': '半期',
+    'yearly': '年次',
+    'yearPattern': '{year}年',
+    'previousPeriod': '前の期間',
+    'nextPeriod': '次の期間',
   },
   'de': {
     //German
@@ -605,7 +809,7 @@ final _i18nModel = {
       'Sep',
       'Okt',
       'Nov',
-      'Dez'
+      'Dez',
     ],
     'monthLong': [
       'Januar',
@@ -619,11 +823,11 @@ final _i18nModel = {
       'September',
       'Oktober',
       'November',
-      'Dezember'
+      'Dezember',
     ],
     'day': ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'da': {
 //Danish
@@ -642,7 +846,7 @@ final _i18nModel = {
       'sept',
       'okt',
       'nov',
-      'dec'
+      'dec',
     ],
     'monthLong': [
       'januar',
@@ -656,11 +860,11 @@ final _i18nModel = {
       'september',
       'oktober',
       'november',
-      'december'
+      'december',
     ],
     'day': ['man', 'tirs', 'ons', 'tors', 'fre', 'lør', 'søn'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'bn': {
 //Bengali
@@ -668,44 +872,44 @@ final _i18nModel = {
     'done': 'সম্পন্ন',
     'today': 'আজ',
     'monthShort': [
-      "জানু",
-      "ফেব্",
-      "মার্চ",
-      "এপ্রিল",
-      "মে",
-      "জুন",
-      "জুলাই",
-      "অগাস্ট",
-      "সেপ্ট",
-      "অক্ট",
-      "নভেম্",
-      "ডিসেম্"
+      'জানু',
+      'ফেব্',
+      'মার্চ',
+      'এপ্রিল',
+      'মে',
+      'জুন',
+      'জুলাই',
+      'অগাস্ট',
+      'সেপ্ট',
+      'অক্ট',
+      'নভেম্',
+      'ডিসেম্',
     ],
     'monthLong': [
-      "জানুয়ারী",
-      "ফেব্রুয়ারি",
-      "মার্চ",
-      "এপ্রিল",
-      "মে",
-      "জুন",
-      "জুলাই",
-      "অগাস্ট",
-      "সেপ্টেম্বর",
-      "অক্টোবর",
-      "নভেম্বর",
-      "ডিসেম্বর"
+      'জানুয়ারী',
+      'ফেব্রুয়ারি',
+      'মার্চ',
+      'এপ্রিল',
+      'মে',
+      'জুন',
+      'জুলাই',
+      'অগাস্ট',
+      'সেপ্টেম্বর',
+      'অক্টোবর',
+      'নভেম্বর',
+      'ডিসেম্বর',
     ],
     'day': [
-      "রবিবার",
-      "সোমবার",
-      "মঙ্গলবার",
-      "বুধবার",
-      "বৃহস্পতিবার",
-      "শুক্রবার",
-      "শনিবার",
+      'রবিবার',
+      'সোমবার',
+      'মঙ্গলবার',
+      'বুধবার',
+      'বৃহস্পতিবার',
+      'শুক্রবার',
+      'শনিবার',
     ],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'vi': {
     'cancel': 'Hủy bỏ',
@@ -723,7 +927,7 @@ final _i18nModel = {
       'Thg9',
       'Thg10',
       'Thg11',
-      'Thg12'
+      'Thg12',
     ],
     'monthLong': [
       'Tháng 1',
@@ -737,17 +941,19 @@ final _i18nModel = {
       'Tháng 9',
       'Tháng 10',
       'Tháng 11',
-      'Tháng 12'
+      'Tháng 12',
     ],
-    'quarter':['Quý 1','Quý 2','Quý 3','Quý 4'],
-    'halfYear':['Nửa đầu năm','Nửa cuối năm'],
+    'quarter': ['Quý 1', 'Quý 2', 'Quý 3', 'Quý 4'],
+    'halfYear': ['Nửa đầu năm', 'Nửa cuối năm'],
     'day': ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
     'am': 'SA',
     'pm': 'CH',
     'monthly': 'Tháng',
     'quarterly': 'Quý',
     'halfYearly': 'Nửa năm',
-    'yearly': 'Năm'
+    'yearly': 'Năm',
+    'previousPeriod': 'Kỳ trước',
+    'nextPeriod': 'Kỳ sau',
   },
   'hy': {
 //Armenian
@@ -766,7 +972,7 @@ final _i18nModel = {
       'Սեպ',
       'Հոկ',
       'Նոյ',
-      'Դեկ'
+      'Դեկ',
     ],
     'monthLong': [
       'Հունվար',
@@ -780,11 +986,11 @@ final _i18nModel = {
       'Սեպտեմբեր',
       'Հոկտեմբեր',
       'Նոյեմբեր',
-      'Դեկտեմբեր'
+      'Դեկտեմբեր',
     ],
     'day': ['Երկ', 'Երք', 'Չրք', 'Հնգ', 'Ուր', 'Շբթ', 'Կիր'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'id': {
     'cancel': 'Batal',
@@ -802,7 +1008,7 @@ final _i18nModel = {
       'Sep',
       'Okt',
       'Nov',
-      'Des'
+      'Des',
     ],
     'monthLong': [
       'Januari',
@@ -816,11 +1022,11 @@ final _i18nModel = {
       'September',
       'Oktober',
       'November',
-      'Desember'
+      'Desember',
     ],
     'day': ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'bg': {
     'cancel': 'Отказ',
@@ -838,7 +1044,7 @@ final _i18nModel = {
       'Сен',
       'Окт',
       'Ное',
-      'Дек'
+      'Дек',
     ],
     'monthLong': [
       'Януари',
@@ -852,11 +1058,11 @@ final _i18nModel = {
       'Септември',
       'Октомври',
       'Ноември',
-      'Декември'
+      'Декември',
     ],
     'day': ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'eu': {
     // basque
@@ -875,7 +1081,7 @@ final _i18nModel = {
       'ira.',
       'urr.',
       'aza.',
-      'abe.'
+      'abe.',
     ],
     'monthLong': [
       'urtarrila',
@@ -889,11 +1095,11 @@ final _i18nModel = {
       'iraila',
       'urria',
       'azaroa',
-      'abendua'
+      'abendua',
     ],
     'day': ['al.', 'ar.', 'az.', 'og.', 'or.', 'lr.', 'ig.'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'cat': {
     // catalan
@@ -912,7 +1118,7 @@ final _i18nModel = {
       'Set',
       'Oct',
       'Nov',
-      'Des'
+      'Des',
     ],
     'monthLong': [
       'Gener',
@@ -926,11 +1132,11 @@ final _i18nModel = {
       'Setembre',
       'Octubre',
       'Novembre',
-      'Decembre'
+      'Decembre',
     ],
     'day': ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'th': {
     //thai
@@ -949,7 +1155,7 @@ final _i18nModel = {
       'ก.ย',
       'ต.ค',
       'พ.ย',
-      'ธ.ค'
+      'ธ.ค',
     ],
     'monthLong': [
       'มกราคม',
@@ -963,11 +1169,11 @@ final _i18nModel = {
       'กันยายน',
       'ตุลาคม',
       'พฤศจิกายน',
-      'ธันวาคม'
+      'ธันวาคม',
     ],
     'day': ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'],
     'am': 'AM',
-    'pm': 'PM'
+    'pm': 'PM',
   },
   'si': {
     //Slovenian
@@ -986,7 +1192,7 @@ final _i18nModel = {
       'sep',
       'okt',
       'nov',
-      'dec'
+      'dec',
     ],
     'monthLong': [
       'januar',
@@ -1000,11 +1206,11 @@ final _i18nModel = {
       'september',
       'oktober',
       'november',
-      'december'
+      'december',
     ],
     'day': ['pon', 'tor', 'sre', 'čet', 'pet', 'sob', 'ned'],
     'am': '',
-    'pm': ''
+    'pm': '',
   },
   'no': {
     'cancel': 'Avbryt',
@@ -1022,7 +1228,7 @@ final _i18nModel = {
       'Sep',
       'Okt',
       'Nov',
-      'Des'
+      'Des',
     ],
     'monthLong': [
       'Januar',
@@ -1036,14 +1242,18 @@ final _i18nModel = {
       'September',
       'Oktober',
       'November',
-      'Desember'
+      'Desember',
     ],
     'day': ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'],
     'am': '',
-    'pm': ''
+    'pm': '',
   },
 };
-//get international object
+
+/// The raw string table for [type].
+///
+/// Prefer `DateStripLabels.forLocale`, which fills missing entries with
+/// English. Returns the English table for locales without their own entry.
 Map<String, Object>? i18nObjInLocale(LocaleType type) {
   switch (type) {
     case LocaleType.fa:
