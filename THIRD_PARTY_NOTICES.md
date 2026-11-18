@@ -12,10 +12,11 @@ require.
 - Source: <https://github.com/IronLad85/flutter_calendar_strip> (pub.dev package
   [`calendar_strip`](https://pub.dev/packages/calendar_strip))
 - Used in:
-  - `lib/date-utils.dart` (the `DateUtils` class) — copied with
+  - `lib/date-utils.dart` (the deprecated `DateUtils` class) — copied with
     minor changes.
-  - The `SlideFadeTransition` widget — copied.
-  - The range helpers on `DateStripReportState`
+  - `lib/src/slide_fade_transition.dart` (the deprecated `SlideFadeTransition`
+    widget) — copied, then fixed for disposal.
+  - The deprecated range helpers on `DateStripReportState`
     (`runPresetsAndExceptions`, `isDateBefore`, `isDateAfter`, `getDateOnly`,
     `nullOrDefault`) — adapted.
 
