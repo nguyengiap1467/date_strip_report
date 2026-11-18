@@ -3,9 +3,18 @@ description: >-
   A report-period selector for Flutter. Switch between month, quarter,
   half-year and year, step through periods, and keep selection inside an
   optional date range.
-version: 1.2.0
+version: 2.0.0
 repository: https://github.com/nguyengiap1467/date_strip_report
 issue_tracker: https://github.com/nguyengiap1467/date_strip_report/issues
+screenshots:
+  - description: Monthly view in the light theme.
+    path: images/v2_monthly_light.png
+  - description: A quarter clamped to a configured date range.
+    path: images/v2_quarter_range.png
+  - description: Vietnamese labels in the dark theme.
+    path: images/v2_half_vi_dark.png
+  - description: Yearly view with explicit (1.x) colors.
+    path: images/v2_year_classic.png
 topics:
   - date
   - calendar
