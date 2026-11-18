@@ -586,6 +586,11 @@ class DateStripReportState extends State<DateStripReport>
 }
 
 
+// SlideFadeTransition and the range helpers above (runPresetsAndExceptions,
+// isDateBefore, isDateAfter, getDateOnly, nullOrDefault) are derived from
+// calendar_strip (https://github.com/IronLad85/flutter_calendar_strip)
+// Copyright (c) 2019, Siddharth V Sakre. Licensed under the BSD 3-Clause
+// License. See THIRD_PARTY_NOTICES.md for the full license text.
 class SlideFadeTransition extends StatefulWidget {
   final Widget child;
   final int? delay;

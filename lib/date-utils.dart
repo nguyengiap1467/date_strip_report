@@ -1,3 +1,7 @@
+// Derived from calendar_strip (https://github.com/IronLad85/flutter_calendar_strip)
+// Copyright (c) 2019, Siddharth V Sakre. Licensed under the BSD 3-Clause
+// License. See THIRD_PARTY_NOTICES.md for the full license text.
+
 class DateUtils {
   static DateTime toMidnight(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day);

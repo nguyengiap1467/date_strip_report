@@ -1,3 +1,8 @@
+// The LocaleType enum, i18nObjInLocale and the base string table are derived
+// from flutter_datetime_picker (https://github.com/Realank/flutter_datetime_picker)
+// Copyright (c) 2018 Liu Yanbo. Licensed under the MIT License.
+// See THIRD_PARTY_NOTICES.md for the full license text.
+
 enum LocaleType {
   en,
   fa,
