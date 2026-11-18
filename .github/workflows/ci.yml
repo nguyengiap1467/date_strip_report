@@ -17,6 +17,7 @@ jobs:
   test:
     name: Test (Flutter ${{ matrix.label }})
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -64,6 +65,21 @@ jobs:
       - name: Test package
         run: flutter test --coverage
 
+      # Calendar edge cases: DST at midnight (Santiago) and time zones that
+      # skipped a whole calendar day (Kiritimati 1994-12-31, Apia 2011-12-30).
+      - name: Test date logic in edge-case time zones
+        if: matrix.strict
+        run: |
+          for tz in America/Santiago Pacific/Kiritimati Pacific/Apia; do
+            echo "::group::TZ=$tz"
+            TZ=$tz flutter test test/src
+            echo "::endgroup::"
+          done
+
+      - name: Test package in Chrome
+        if: matrix.strict
+        run: flutter test --platform chrome
+
       - name: Test example
         working-directory: example
         run: flutter test
@@ -76,6 +92,7 @@ jobs:
     name: Build example (${{ matrix.target }})
     needs: test
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -86,6 +103,8 @@ jobs:
           - target: android
             os: ubuntu-latest
             command: flutter build apk --debug
+          # integration_test makes the iOS example use CocoaPods, which the
+          # macOS runner image provides.
           - target: ios
             os: macos-latest
             command: flutter build ios --debug --no-codesign
@@ -101,6 +120,7 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      # The example's platform folders come from the Flutter 3.29 templates.
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
