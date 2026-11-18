@@ -49,6 +49,9 @@ a defined date-range contract, theming and accessibility. See
 - `SlideFadeTransition` could call `forward()` on a disposed controller.
 - Month ends no longer use `Duration` arithmetic, which was wrong in time
   zones where daylight saving changes at midnight.
+- Periods ending on a calendar day that the local time zone skipped
+  (e.g. `Pacific/Kiritimati` on 1994-12-31) reported a `toDate` in the next
+  period.
 
 ### Added
 
@@ -64,7 +67,8 @@ a defined date-range contract, theming and accessibility. See
   navigation (Tab, Enter/Space, Left/Right arrows, RTL-aware).
 - Translations of period labels for Chinese, Japanese and Korean, and of the
   navigation tooltips for English, Vietnamese, Chinese, Japanese and Korean.
-- Unit and widget tests, GitHub Actions CI, and a rebuilt example app for
+- Unit, widget and device integration tests (also run in Chrome and under
+  several time zones), GitHub Actions CI, and a rebuilt example app for
   Android, iOS and web.
 - `THIRD_PARTY_NOTICES.md` with the licenses of code derived from
   `calendar_strip` (BSD-3-Clause) and `flutter_datetime_picker` (MIT).

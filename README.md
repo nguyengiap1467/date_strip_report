@@ -29,12 +29,16 @@ range — optionally limited to a date range.
 
 The package contains no platform-specific code.
 
-| Platform | Status |
+| Platform | Verified for 2.0.0 |
 | --- | --- |
-| Android | Example app built (debug APK) |
-| iOS | Example app built (`--no-codesign`) |
-| Web | Example app built |
+| Android | Example app builds (debug APK); not yet run on a device or emulator |
+| iOS | Example app builds; integration tests pass on the iOS 26.5 simulator |
+| Web | Example app builds and runs in Chrome; the test suite passes in Chrome |
 | macOS, Windows, Linux | Expected to work (pure Flutter); not built or tested |
+
+The widget works inside `MaterialApp`, `CupertinoApp` or any `WidgetsApp`
+with a navigator. Its tooltips need an `Overlay` ancestor, which all of these
+provide.
 
 ## Installation
 
@@ -275,6 +279,10 @@ screenrecord demo.mp4`), and convert it, e.g.
   their year/month/day fields.
 - `initialDate` and `initialDateType` are only read when the widget is first
   created (like an initial value).
+- For years after 2037 the Dart runtime only approximates local time-zone
+  offsets; in zones that changed their UTC offset (e.g. `Pacific/Apia`) such
+  dates can be shifted by a day. Calendar days skipped by a time zone (e.g.
+  `Pacific/Kiritimati`, 1994-12-31) are handled.
 - There is no controller for programmatic navigation yet.
 - `LocaleType.jp` and `LocaleType.cat` are not ISO 639-1 codes (`ja`, `ca`);
   they are kept for compatibility.
@@ -287,7 +295,10 @@ Issues and pull requests are welcome. Before opening a PR, run:
 dart format lib test example/lib example/test
 flutter analyze
 flutter test
+flutter test --platform chrome
 (cd example && flutter test)
+# On a device, simulator or emulator:
+(cd example && flutter test integration_test/app_test.dart -d <device id>)
 ```
 
 ## License
