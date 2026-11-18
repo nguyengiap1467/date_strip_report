@@ -290,7 +290,6 @@ class _ResultCard extends StatelessWidget {
               child: Text(
                 name,
                 style: TextStyle(
-                  fontFamily: 'monospace',
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
